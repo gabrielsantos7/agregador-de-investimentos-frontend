@@ -8,95 +8,95 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './pages/__root'
-import { Route as HomeLayoutRouteImport } from './pages/_home/layout'
-import { Route as HomeIndexRouteImport } from './pages/_home/index'
-import { Route as HomeAboutRouteImport } from './pages/_home/about'
+import { Route as rootRouteImport } from './pages/__root';
+import { Route as HomeLayoutRouteImport } from './pages/_home/layout';
+import { Route as HomeIndexRouteImport } from './pages/_home/index';
+import { Route as HomeAboutRouteImport } from './pages/_home/about';
 
 const HomeLayoutRoute = HomeLayoutRouteImport.update({
-  id: '/_home',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: '/_home',
+	getParentRoute: () => rootRouteImport,
+} as any);
 const HomeIndexRoute = HomeIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => HomeLayoutRoute,
-} as any)
+	id: '/',
+	path: '/',
+	getParentRoute: () => HomeLayoutRoute,
+} as any);
 const HomeAboutRoute = HomeAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => HomeLayoutRoute,
-} as any)
+	id: '/about',
+	path: '/about',
+	getParentRoute: () => HomeLayoutRoute,
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof HomeIndexRoute
-  '/about': typeof HomeAboutRoute
+	'/': typeof HomeIndexRoute;
+	'/about': typeof HomeAboutRoute;
 }
 export interface FileRoutesByTo {
-  '/about': typeof HomeAboutRoute
-  '/': typeof HomeIndexRoute
+	'/about': typeof HomeAboutRoute;
+	'/': typeof HomeIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/_home': typeof HomeLayoutRouteWithChildren
-  '/_home/about': typeof HomeAboutRoute
-  '/_home/': typeof HomeIndexRoute
+	__root__: typeof rootRouteImport;
+	'/_home': typeof HomeLayoutRouteWithChildren;
+	'/_home/about': typeof HomeAboutRoute;
+	'/_home/': typeof HomeIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/about' | '/'
-  id: '__root__' | '/_home' | '/_home/about' | '/_home/'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths: '/' | '/about';
+	fileRoutesByTo: FileRoutesByTo;
+	to: '/about' | '/';
+	id: '__root__' | '/_home' | '/_home/about' | '/_home/';
+	fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  HomeLayoutRoute: typeof HomeLayoutRouteWithChildren
+	HomeLayoutRoute: typeof HomeLayoutRouteWithChildren;
 }
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_home': {
-      id: '/_home'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof HomeLayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_home/': {
-      id: '/_home/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof HomeIndexRouteImport
-      parentRoute: typeof HomeLayoutRoute
-    }
-    '/_home/about': {
-      id: '/_home/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof HomeAboutRouteImport
-      parentRoute: typeof HomeLayoutRoute
-    }
-  }
+	interface FileRoutesByPath {
+		'/_home': {
+			id: '/_home';
+			path: '';
+			fullPath: '/';
+			preLoaderRoute: typeof HomeLayoutRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		'/_home/': {
+			id: '/_home/';
+			path: '/';
+			fullPath: '/';
+			preLoaderRoute: typeof HomeIndexRouteImport;
+			parentRoute: typeof HomeLayoutRoute;
+		};
+		'/_home/about': {
+			id: '/_home/about';
+			path: '/about';
+			fullPath: '/about';
+			preLoaderRoute: typeof HomeAboutRouteImport;
+			parentRoute: typeof HomeLayoutRoute;
+		};
+	}
 }
 
 interface HomeLayoutRouteChildren {
-  HomeAboutRoute: typeof HomeAboutRoute
-  HomeIndexRoute: typeof HomeIndexRoute
+	HomeAboutRoute: typeof HomeAboutRoute;
+	HomeIndexRoute: typeof HomeIndexRoute;
 }
 
 const HomeLayoutRouteChildren: HomeLayoutRouteChildren = {
-  HomeAboutRoute: HomeAboutRoute,
-  HomeIndexRoute: HomeIndexRoute,
-}
+	HomeAboutRoute: HomeAboutRoute,
+	HomeIndexRoute: HomeIndexRoute,
+};
 
 const HomeLayoutRouteWithChildren = HomeLayoutRoute._addFileChildren(
-  HomeLayoutRouteChildren,
-)
+	HomeLayoutRouteChildren
+);
 
 const rootRouteChildren: RootRouteChildren = {
-  HomeLayoutRoute: HomeLayoutRouteWithChildren,
-}
+	HomeLayoutRoute: HomeLayoutRouteWithChildren,
+};
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>();

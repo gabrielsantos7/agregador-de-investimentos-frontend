@@ -31,7 +31,7 @@ export const Playground: Story = {
 					<DropdownMenuItem>Apple</DropdownMenuItem>
 					<DropdownMenuItem>Pineapple</DropdownMenuItem>
 					<DropdownMenuItem>Orange</DropdownMenuItem>
-          <DropdownMenuItem>Strawberry</DropdownMenuItem>
+					<DropdownMenuItem>Strawberry</DropdownMenuItem>
 				</DropdownMenuContent>
 			</>
 		),
