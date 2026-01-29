@@ -5,19 +5,18 @@
  * System for managing stock portfolios with real-time integration via Brapi.
  * OpenAPI spec version: 1.0
  */
+import type { UserDtoRole } from './userDtoRole';
 
 /**
- * Request payload to create a new user
+ * Represents the authenticated user
  */
-export interface CreateUserDto {
+export interface UserDto {
+	/** Unique identifier of the user */
+	userId?: string;
 	/** Unique username used to identify the user in the system */
-	username: string;
+	username?: string;
 	/** User email address */
-	email: string;
-	/**
-	 * User password with a minimum of 8 characters
-	 * @minLength 8
-	 * @maxLength 2147483647
-	 */
-	password: string;
+	email?: string;
+	/** Role or profile assigned to the user */
+	role?: UserDtoRole;
 }

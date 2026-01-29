@@ -1,6 +1,11 @@
 import { TanStackDevtools } from '@tanstack/react-devtools';
-import { createRootRoute, HeadContent, Outlet } from '@tanstack/react-router';
+import {
+	createRootRouteWithContext,
+	HeadContent,
+	Outlet,
+} from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
+import type { QueryClientContext } from '@/integrations/tanstack-query/root-provider';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
 
 const RootLayout = () => (
@@ -22,4 +27,6 @@ const RootLayout = () => (
 	</>
 );
 
-export const Route = createRootRoute({ component: RootLayout });
+export const Route = createRootRouteWithContext<QueryClientContext>()({
+	component: RootLayout,
+});

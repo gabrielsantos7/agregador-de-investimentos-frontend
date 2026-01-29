@@ -1,7 +1,28 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
+import {
+	createFileRoute,
+	Link,
+	Outlet,
+	redirect,
+} from '@tanstack/react-router';
 import { ThemeToggler } from '@/components/theme/theme-toggler';
+import { getMeQueryOptions } from '@/http/requests/authentication';
+import { authStore } from '@/integrations/tanstack-store/stores/auth.store';
 
 export const Route = createFileRoute('/_home')({
+	beforeLoad: ({ location }) => {
+		const token = authStore.state.token;
+
+		if (!token) {
+			throw redirect({
+				to: '/login',
+				search: { redirect: location.href },
+			});
+		}
+	},
+
+	loader: ({ context: { queryClient } }) => {
+		return queryClient.ensureQueryData(getMeQueryOptions());
+	},
 	component: Layout,
 });
 
