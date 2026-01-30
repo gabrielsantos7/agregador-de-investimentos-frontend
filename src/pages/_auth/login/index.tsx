@@ -90,81 +90,81 @@ function Login() {
 						e.preventDefault();
 						form.handleSubmit();
 					}}
-					className='space-y-4'
+					className="space-y-4"
 				>
-						<FieldGroup className='gap-4'>
-							<form.Field
-								name="username"
-								// biome-ignore lint/correctness/noChildrenProp: <defined prop>
-								children={field => {
-									const isInvalid =
-										field.state.meta.isTouched && !field.state.meta.isValid;
+					<FieldGroup className="gap-4">
+						<form.Field
+							name="username"
+							// biome-ignore lint/correctness/noChildrenProp: <defined prop>
+							children={field => {
+								const isInvalid =
+									field.state.meta.isTouched && !field.state.meta.isValid;
 
-									return (
-										<Field className="grid gap-2" data-invalid={isInvalid}>
-											<FieldLabel htmlFor={field.name}>Username</FieldLabel>
-											<Input
-												type="text"
-												id={field.name}
-												name={field.name}
-												value={field.state.value}
-												onBlur={field.handleBlur}
-												onChange={e => field.handleChange(e.target.value)}
-												aria-invalid={isInvalid}
-												placeholder="johndoe"
-												autoComplete="username"
-												disabled={isLoggingIn}
-											/>
-											{isInvalid && (
-												<FieldError errors={field.state.meta.errors} />
-											)}
-										</Field>
-									);
-								}}
-							/>
-							<form.Field
-								name="password"
-								// biome-ignore lint/correctness/noChildrenProp: <defined prop>
-								children={field => {
-									const isInvalid =
-										field.state.meta.isTouched && !field.state.meta.isValid;
+								return (
+									<Field className="grid gap-2" data-invalid={isInvalid}>
+										<FieldLabel htmlFor={field.name}>Username</FieldLabel>
+										<Input
+											type="text"
+											id={field.name}
+											name={field.name}
+											value={field.state.value}
+											onBlur={field.handleBlur}
+											onChange={e => field.handleChange(e.target.value)}
+											aria-invalid={isInvalid}
+											placeholder="johndoe"
+											autoComplete="username"
+											disabled={isLoggingIn}
+										/>
+										{isInvalid && (
+											<FieldError errors={field.state.meta.errors} />
+										)}
+									</Field>
+								);
+							}}
+						/>
+						<form.Field
+							name="password"
+							// biome-ignore lint/correctness/noChildrenProp: <defined prop>
+							children={field => {
+								const isInvalid =
+									field.state.meta.isTouched && !field.state.meta.isValid;
 
-									return (
-										<Field className="grid gap-2" data-invalid={isInvalid}>
-											<div className="flex justify-between items-center">
-												<FieldLabel htmlFor={field.name}>Password</FieldLabel>
-											</div>
-											<PasswordInput
-												id={field.name}
-												name={field.name}
-												value={field.state.value}
-												onBlur={field.handleBlur}
-												onChange={e => field.handleChange(e.target.value)}
-												aria-invalid={isInvalid}
-												placeholder="enter your password here..."
-												autoComplete="current-password"
-												disabled={isLoggingIn}
-											/>
-											{isInvalid && (
-												<FieldError errors={field.state.meta.errors} />
-											)}
-										</Field>
-									);
-								}}
-							/>
-						</FieldGroup>
-						<Button
-							type="submit"
-							variant="primary"
-							className="w-full"
-							disabled={isLoggingIn}
-						>
-							{isLoggingIn ? (
-								<LoaderCircle className="animate-spin size-6" strokeWidth={3} />
-							) : (
-								'Login'
-							)}
-						</Button>
+								return (
+									<Field className="grid gap-2" data-invalid={isInvalid}>
+										<div className="flex justify-between items-center">
+											<FieldLabel htmlFor={field.name}>Password</FieldLabel>
+										</div>
+										<PasswordInput
+											id={field.name}
+											name={field.name}
+											value={field.state.value}
+											onBlur={field.handleBlur}
+											onChange={e => field.handleChange(e.target.value)}
+											aria-invalid={isInvalid}
+											placeholder="enter your password here..."
+											autoComplete="current-password"
+											disabled={isLoggingIn}
+										/>
+										{isInvalid && (
+											<FieldError errors={field.state.meta.errors} />
+										)}
+									</Field>
+								);
+							}}
+						/>
+					</FieldGroup>
+					<Button
+						type="submit"
+						variant="primary"
+						className="w-full"
+						disabled={isLoggingIn}
+					>
+						{isLoggingIn ? (
+							<LoaderCircle className="animate-spin size-6" strokeWidth={3} />
+						) : (
+							'Login'
+						)}
+					</Button>
 				</form>
 				<div className="mt-4 text-center text-sm">
 					Don&apos;t have an account?{' '}
