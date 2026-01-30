@@ -90,7 +90,7 @@ function Login() {
 						e.preventDefault();
 						form.handleSubmit();
 					}}
-					className="space-y-4"
+					className="space-y-6"
 				>
 					<FieldGroup className="gap-4">
 						<form.Field

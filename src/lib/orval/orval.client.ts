@@ -1,7 +1,9 @@
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
-import { authStore } from '@/integrations/tanstack-store/stores/auth.store';
-
-const DO_NOT_401_REDIRECT_PATHS = ['/login'];
+import { StatusCodes } from 'http-status-codes';
+import {
+	AUTH_TOKEN_KEY,
+	authStore,
+} from '@/integrations/tanstack-store/stores/auth.store';
 
 const axiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
@@ -9,7 +11,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(config => {
-	const token = localStorage.getItem('accessToken');
+	const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
@@ -23,8 +25,9 @@ axiosInstance.interceptors.response.use(
 	response => response,
 	error => {
 		if (
-			error.response?.status === 401 &&
-			!DO_NOT_401_REDIRECT_PATHS.includes(window.location.pathname)
+			error.status === StatusCodes.UNAUTHORIZED
+			// error.response?.status === 401 &&
+			// !DO_NOT_401_REDIRECT_PATHS.includes(window.location.pathname)
 		) {
 			authStore.setState({ token: null, user: null });
 		}

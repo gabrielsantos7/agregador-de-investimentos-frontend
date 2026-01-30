@@ -1,6 +1,5 @@
 import { useForm } from '@tanstack/react-form';
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
-import { StatusCodes } from 'http-status-codes';
 import { LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -21,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/password-input';
 import type { ApiError } from '@/http/errors/api-error';
 import { useRegister } from '@/http/requests/authentication';
+import { setAuthData } from '@/integrations/tanstack-store/stores/auth.store';
 import { redirectSchema } from '@/schemas/redirect.schema';
 import {
 	type RegisterSchema,
@@ -49,18 +49,15 @@ function Register() {
 
 	const { mutate: register, isPending: isRegistering } = useRegister<ApiError>({
 		mutation: {
-			onSuccess: () => {
+			onSuccess: ({ user, accessToken }) => {
 				toast.success('Success', {
 					description: 'Your account has been created.',
 				});
+				setAuthData(user, accessToken);
 				navigate({ to: redirect });
 			},
-			onError: (error: any) => {
-				const description =
-					error.response?.data?.message ||
-					error.message ||
-					'An unexpected error occurred';
-
+			onError: error => {
+				const description = error.message || 'An unexpected error occurred';
 				toast.error('Registration failed', { description });
 			},
 		},
@@ -91,7 +88,7 @@ function Register() {
 						e.preventDefault();
 						form.handleSubmit();
 					}}
-					className="space-y-4"
+					className="space-y-6"
 				>
 					<FieldGroup className="gap-4">
 						<form.Field name="username">

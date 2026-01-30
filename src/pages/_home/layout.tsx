@@ -6,7 +6,10 @@ import {
 } from '@tanstack/react-router';
 import { ThemeToggler } from '@/components/theme/theme-toggler';
 import { getMeQueryOptions } from '@/http/requests/authentication';
-import { authStore } from '@/integrations/tanstack-store/stores/auth.store';
+import {
+	authStore,
+	useAuth,
+} from '@/integrations/tanstack-store/stores/auth.store';
 
 export const Route = createFileRoute('/_home')({
 	beforeLoad: ({ location }) => {
@@ -20,13 +23,19 @@ export const Route = createFileRoute('/_home')({
 		}
 	},
 
-	loader: ({ context: { queryClient } }) => {
-		return queryClient.ensureQueryData(getMeQueryOptions());
+	loader: async ({ context: { queryClient } }) => {
+		const userData = await queryClient.ensureQueryData(getMeQueryOptions());
+
+		authStore.setState(prev => ({
+			...prev,
+			user: userData,
+		}));
 	},
 	component: Layout,
 });
 
 function Layout() {
+	const { user } = useAuth();
 	return (
 		<>
 			<div className="flex items-center justify-between p-2">
@@ -38,7 +47,10 @@ function Layout() {
 						About
 					</Link>
 				</div>
-				<ThemeToggler />
+				<div className="flex items-center">
+					{user && <span className="mr-4">Hello, {user.username}</span>}
+					<ThemeToggler />
+				</div>
 			</div>
 			<hr />
 
