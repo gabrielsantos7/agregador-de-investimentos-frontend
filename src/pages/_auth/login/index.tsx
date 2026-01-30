@@ -90,10 +90,9 @@ function Login() {
 						e.preventDefault();
 						form.handleSubmit();
 					}}
-					className="space-y-8"
+					className='space-y-4'
 				>
-					<div className="grid gap-6">
-						<FieldGroup>
+						<FieldGroup className='gap-4'>
 							<form.Field
 								name="username"
 								// biome-ignore lint/correctness/noChildrenProp: <defined prop>
@@ -166,7 +165,6 @@ function Login() {
 								'Login'
 							)}
 						</Button>
-					</div>
 				</form>
 				<div className="mt-4 text-center text-sm">
 					Don&apos;t have an account?{' '}

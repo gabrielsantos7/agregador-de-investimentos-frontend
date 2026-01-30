@@ -39,6 +39,7 @@ const formDefaultValues: RegisterSchema = {
 	username: '',
 	email: '',
 	password: '',
+	confirmPassword: '',
 	role: 'ADMIN',
 };
 
@@ -91,10 +92,9 @@ function Register() {
 						e.preventDefault();
 						form.handleSubmit();
 					}}
-					className="space-y-8"
+					className='space-y-4'
 				>
-					<div className="grid gap-6">
-						<FieldGroup>
+						<FieldGroup className='gap-4'>
 							<form.Field name="username">
 								{field => {
 									const isInvalid =
@@ -167,6 +167,32 @@ function Register() {
 									);
 								}}
 							</form.Field>
+
+							<form.Field name="confirmPassword">
+								{field => {
+									const isInvalid =
+										field.state.meta.isTouched &&
+										field.state.meta.errors.length > 0;
+									return (
+										<Field className="grid gap-2" data-invalid={isInvalid}>
+											<FieldLabel htmlFor={field.name}>
+												Confirm Password
+											</FieldLabel>
+											<PasswordInput
+												id={field.name}
+												value={field.state.value}
+												onBlur={field.handleBlur}
+												onChange={e => field.handleChange(e.target.value)}
+												placeholder="••••••••"
+												disabled={isRegistering}
+											/>
+											{isInvalid && (
+												<FieldError errors={field.state.meta.errors} />
+											)}
+										</Field>
+									);
+								}}
+							</form.Field>
 						</FieldGroup>
 
 						<Button
@@ -181,7 +207,6 @@ function Register() {
 								'Register'
 							)}
 						</Button>
-					</div>
 				</form>
 				<div className="mt-4 text-center text-sm">
 					Already have an account?{' '}
