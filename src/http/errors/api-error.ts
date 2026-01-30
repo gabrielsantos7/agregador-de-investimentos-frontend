@@ -1,6 +1,11 @@
 export interface ApiError {
-	status: number;
-	message: string;
-	timestamp: string;
-	fieldsErrors: null | Record<string, string[]>;
+  status: number;
+  response?: {
+    data: {
+      status: number;
+      message: string;
+      timestamp: string;
+      errors?: Record<string, string> | null;
+    };
+  };
 }

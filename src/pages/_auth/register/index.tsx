@@ -48,24 +48,24 @@ function Register() {
 	const { redirect = '/' } = Route.useSearch();
 
 	const { mutate: register, isPending: isRegistering } = useRegister<ApiError>({
-		mutation: {
-			onSuccess: () => {
-				toast.success('Success', {
-					description: 'Your account has been created.',
-				});
-				navigate({ to: redirect });
-			},
-			onError: error => {
-				let description = 'An unexpected error occurred';
+        mutation: {
+            onSuccess: () => {
+                toast.success('Success', {
+                    description: 'Your account has been created.',
+                });
+                navigate({ to: redirect });
+            },
+            onError: (error) => {
+                let description = 'An unexpected error occurred';
 
-				if (error.status === StatusCodes.BAD_REQUEST) {
-					description = 'Username or email already exists.';
-				}
+                if (error.status === StatusCodes.CONFLICT) {
+                    description = error.response?.data?.message || 'Username or email already exists.';
+                }
 
-				toast.error('Registration failed', { description });
-			},
-		},
-	});
+                toast.error('Registration failed', { description });
+            },
+        },
+    });
 
 	const form = useForm({
 		defaultValues: formDefaultValues,
