@@ -27,7 +27,8 @@
 			"jsxQuoteStyle": "double",
 			"quoteStyle": "single",
 			"semicolons": "always",
-			"trailingCommas": "es5"
+			"trailingCommas": "es5",
+			"indentWidth": 2
 		}
 	},
 	"css": {

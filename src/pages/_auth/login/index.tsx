@@ -30,7 +30,7 @@ export const Route = createFileRoute('/_auth/login/')({
 	head: () => ({
 		meta: [{ title: 'Login' }],
 	}),
-	validateSearch: redirectSchema.parse
+	validateSearch: redirectSchema.parse,
 });
 
 const formDefaultValues = {
@@ -49,7 +49,7 @@ function Login() {
 					description: `Welcome back, ${user.username}.`,
 				});
 				setAuthData(user, accessToken);
-				navigate({ to: redirect || '/'});
+				navigate({ to: redirect || '/' });
 			},
 			onError: error => {
 				let description = 'An unexpected error occurred';
@@ -170,9 +170,13 @@ function Login() {
 				</form>
 				<div className="mt-4 text-center text-sm">
 					Don&apos;t have an account?{' '}
-					<Link to="/register" className="text-emerald-400 hover:underline" search={{
-						redirect
-					}}>
+					<Link
+						to="/register"
+						className="text-emerald-400 hover:underline"
+						search={{
+							redirect,
+						}}
+					>
 						Register
 					</Link>
 				</div>

@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
 export const redirectSchema = z
-  .object({
-    redirect: z.string().optional(),
-  })
-  .loose();
-
+	.object({
+		redirect: z.string().optional(),
+	})
+	.loose();
