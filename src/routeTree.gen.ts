@@ -8,95 +8,163 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './pages/__root';
-import { Route as HomeLayoutRouteImport } from './pages/_home/layout';
-import { Route as HomeIndexRouteImport } from './pages/_home/index';
-import { Route as HomeAboutRouteImport } from './pages/_home/about';
+import { Route as rootRouteImport } from './pages/__root'
+import { Route as HomeLayoutRouteImport } from './pages/_home/layout'
+import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
+import { Route as HomeIndexRouteImport } from './pages/_home/index'
+import { Route as HomeAboutRouteImport } from './pages/_home/about'
+import { Route as AuthRegisterIndexRouteImport } from './pages/_auth/register/index'
+import { Route as AuthLoginIndexRouteImport } from './pages/_auth/login/index'
 
 const HomeLayoutRoute = HomeLayoutRouteImport.update({
-	id: '/_home',
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/_home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLayoutRoute = AuthLayoutRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeIndexRoute = HomeIndexRouteImport.update({
-	id: '/',
-	path: '/',
-	getParentRoute: () => HomeLayoutRoute,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => HomeLayoutRoute,
+} as any)
 const HomeAboutRoute = HomeAboutRouteImport.update({
-	id: '/about',
-	path: '/about',
-	getParentRoute: () => HomeLayoutRoute,
-} as any);
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => HomeLayoutRoute,
+} as any)
+const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
+  id: '/register/',
+  path: '/register/',
+  getParentRoute: () => AuthLayoutRoute,
+} as any)
+const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => AuthLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-	'/': typeof HomeIndexRoute;
-	'/about': typeof HomeAboutRoute;
+  '/': typeof HomeIndexRoute
+  '/about': typeof HomeAboutRoute
+  '/login/': typeof AuthLoginIndexRoute
+  '/register/': typeof AuthRegisterIndexRoute
 }
 export interface FileRoutesByTo {
-	'/about': typeof HomeAboutRoute;
-	'/': typeof HomeIndexRoute;
+  '/': typeof HomeIndexRoute
+  '/about': typeof HomeAboutRoute
+  '/login': typeof AuthLoginIndexRoute
+  '/register': typeof AuthRegisterIndexRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport;
-	'/_home': typeof HomeLayoutRouteWithChildren;
-	'/_home/about': typeof HomeAboutRoute;
-	'/_home/': typeof HomeIndexRoute;
+  __root__: typeof rootRouteImport
+  '/_auth': typeof AuthLayoutRouteWithChildren
+  '/_home': typeof HomeLayoutRouteWithChildren
+  '/_home/about': typeof HomeAboutRoute
+  '/_home/': typeof HomeIndexRoute
+  '/_auth/login/': typeof AuthLoginIndexRoute
+  '/_auth/register/': typeof AuthRegisterIndexRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: '/' | '/about';
-	fileRoutesByTo: FileRoutesByTo;
-	to: '/about' | '/';
-	id: '__root__' | '/_home' | '/_home/about' | '/_home/';
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/about' | '/login/' | '/register/'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/about' | '/login' | '/register'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/_home'
+    | '/_home/about'
+    | '/_home/'
+    | '/_auth/login/'
+    | '/_auth/register/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	HomeLayoutRoute: typeof HomeLayoutRouteWithChildren;
+  AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
+  HomeLayoutRoute: typeof HomeLayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
-	interface FileRoutesByPath {
-		'/_home': {
-			id: '/_home';
-			path: '';
-			fullPath: '/';
-			preLoaderRoute: typeof HomeLayoutRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		'/_home/': {
-			id: '/_home/';
-			path: '/';
-			fullPath: '/';
-			preLoaderRoute: typeof HomeIndexRouteImport;
-			parentRoute: typeof HomeLayoutRoute;
-		};
-		'/_home/about': {
-			id: '/_home/about';
-			path: '/about';
-			fullPath: '/about';
-			preLoaderRoute: typeof HomeAboutRouteImport;
-			parentRoute: typeof HomeLayoutRoute;
-		};
-	}
+  interface FileRoutesByPath {
+    '/_home': {
+      id: '/_home'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof HomeLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_home/': {
+      id: '/_home/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof HomeIndexRouteImport
+      parentRoute: typeof HomeLayoutRoute
+    }
+    '/_home/about': {
+      id: '/_home/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof HomeAboutRouteImport
+      parentRoute: typeof HomeLayoutRoute
+    }
+    '/_auth/register/': {
+      id: '/_auth/register/'
+      path: '/register'
+      fullPath: '/register/'
+      preLoaderRoute: typeof AuthRegisterIndexRouteImport
+      parentRoute: typeof AuthLayoutRoute
+    }
+    '/_auth/login/': {
+      id: '/_auth/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof AuthLoginIndexRouteImport
+      parentRoute: typeof AuthLayoutRoute
+    }
+  }
 }
 
+interface AuthLayoutRouteChildren {
+  AuthLoginIndexRoute: typeof AuthLoginIndexRoute
+  AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
+}
+
+const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
+  AuthLoginIndexRoute: AuthLoginIndexRoute,
+  AuthRegisterIndexRoute: AuthRegisterIndexRoute,
+}
+
+const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
+  AuthLayoutRouteChildren,
+)
+
 interface HomeLayoutRouteChildren {
-	HomeAboutRoute: typeof HomeAboutRoute;
-	HomeIndexRoute: typeof HomeIndexRoute;
+  HomeAboutRoute: typeof HomeAboutRoute
+  HomeIndexRoute: typeof HomeIndexRoute
 }
 
 const HomeLayoutRouteChildren: HomeLayoutRouteChildren = {
-	HomeAboutRoute: HomeAboutRoute,
-	HomeIndexRoute: HomeIndexRoute,
-};
+  HomeAboutRoute: HomeAboutRoute,
+  HomeIndexRoute: HomeIndexRoute,
+}
 
 const HomeLayoutRouteWithChildren = HomeLayoutRoute._addFileChildren(
-	HomeLayoutRouteChildren
-);
+  HomeLayoutRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-	HomeLayoutRoute: HomeLayoutRouteWithChildren,
-};
+  AuthLayoutRoute: AuthLayoutRouteWithChildren,
+  HomeLayoutRoute: HomeLayoutRouteWithChildren,
+}
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()

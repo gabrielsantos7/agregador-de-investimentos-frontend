@@ -42,6 +42,7 @@ A aplicação estará disponível em `http://localhost:5173`
 - `pnpm format` - Formata o código
 - `pnpm lint` - Executa o linter
 - `pnpm preview` - Visualiza o build de produção
+- `pnpm storybook` - Executa o storybook
 
 ## 🛠️ Tecnologias utilizadas
 
@@ -56,6 +57,7 @@ A aplicação estará disponível em `http://localhost:5173`
 - **TanStack Router** - Gerenciamento de rotas da aplicação
 - **TanStack Query** - Gerenciamento de estado assíncrono e cache de dados
 - **TanStack Store** - Gerenciamento de estado global
+- **TanStack Form** - Gerenciamento de formulários
 
 ### UI e estilização
 
@@ -68,6 +70,10 @@ A aplicação estará disponível em `http://localhost:5173`
 
 - **Axios** - Fazer requisições HTTP para a API
 
+### Documentação
+
+- **Storybook**: Ferramenta de desenvolvimento que permite criar, visualizar e testar componentes React de forma isolada
+
 ### Utilitários
 
 - **clsx** - Utilitário para construção de classes CSS condicionais
@@ -78,3 +84,4 @@ A aplicação estará disponível em `http://localhost:5173`
 
 - **Biome** - Formatter e linter para JavaScript/TypeScript
 - **TanStack Devtools** - Ferramentas de desenvolvimento para debug
+
