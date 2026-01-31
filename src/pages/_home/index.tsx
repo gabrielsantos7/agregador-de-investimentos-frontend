@@ -1,12 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Navigate } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_home/')({
-	component: About,
+	component: Home,
 	head: () => ({
 		meta: [{ title: 'Home' }],
 	}),
 });
 
-function About() {
-	return <p>Hello "/"!</p>;
+function Home() {
+	return <Navigate to="/dashboard" />;
 }

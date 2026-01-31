@@ -209,7 +209,7 @@ function Register() {
 					<Link
 						to="/login"
 						search={{ redirect }}
-						className="text-emerald-400 hover:underline"
+						className="text-lime-400 hover:underline"
 					>
 						Login
 					</Link>
