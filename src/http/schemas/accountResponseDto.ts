@@ -11,7 +11,7 @@
  */
 export interface AccountResponseDto {
 	/** Unique identifier of the account */
-	accountId?: string;
+	accountId: string;
 	/** Friendly description of the account */
-	description?: string;
+	description: string;
 }

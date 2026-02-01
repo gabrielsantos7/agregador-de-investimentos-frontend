@@ -12,11 +12,11 @@ import type { UserDtoRole } from './userDtoRole';
  */
 export interface UserDto {
 	/** Unique identifier of the user */
-	userId?: string;
+	userId: string;
 	/** Unique username used to identify the user in the system */
-	username?: string;
+	username: string;
 	/** User email address */
-	email?: string;
+	email: string;
 	/** Role or profile assigned to the user */
-	role?: UserDtoRole;
+	role: UserDtoRole;
 }

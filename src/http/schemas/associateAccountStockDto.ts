@@ -16,5 +16,5 @@ export interface AssociateAccountStockDto {
 	 * Number of shares to associate with the account
 	 * @minimum 1
 	 */
-	quantity?: number;
+	quantity: number;
 }

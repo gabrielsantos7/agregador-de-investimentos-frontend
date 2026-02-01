@@ -21,7 +21,10 @@ import type {
 	UseQueryResult,
 } from '@tanstack/react-query';
 
-import type { AssociateAccountStockDto } from '../schemas';
+import type {
+	AccountStockResponseDto,
+	AssociateAccountStockDto,
+} from '../schemas';
 
 import { orvalClient } from '../../lib/orval/orval.client';
 import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
@@ -31,10 +34,9 @@ import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
  * @summary List of portfolio shares.
  */
 export const listAllStocks = (accountId: string, signal?: AbortSignal) => {
-	return orvalClient<Blob>({
+	return orvalClient<AccountStockResponseDto[]>({
 		url: `/accounts/${accountId}/stocks`,
 		method: 'GET',
-		responseType: 'blob',
 		signal,
 	});
 };

@@ -68,7 +68,7 @@ function Register() {
 		validators: {
 			onSubmit: registerSchema,
 		},
-		onSubmit: async ({ value }) => {
+		onSubmit: ({ value }) => {
 			register({ data: value });
 		},
 	});
