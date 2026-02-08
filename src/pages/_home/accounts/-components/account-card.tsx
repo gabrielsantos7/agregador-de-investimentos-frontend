@@ -1,10 +1,18 @@
 import { Decimal } from 'decimal.js';
-import { Wallet } from 'lucide-react';
-import { useMemo } from 'react';
+import { Eye, MoreVertical, Wallet } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import type { AccountResponseDto } from '@/http/schemas';
 import { formatCurrency } from '@/utils/formatters';
+import { AccountDetailsModal } from './account-details-modal';
 
 export function AccountCard({ account }: { account: AccountResponseDto }) {
 	const totalValue = useMemo(
@@ -18,6 +26,8 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 		[account.stocks]
 	);
 
+	const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
 	return (
 		<Card
 			key={account.accountId}
@@ -25,8 +35,8 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 		>
 			<CardHeader className="flex flex-row items-start justify-between pb-2">
 				<div className="flex items-center gap-3">
-					<div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-lime-500/10">
-						<Wallet className="h-5 w-5 text-primary group-hover:text-lime-500" />
+					<div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-lime-500/10">
+						<Wallet className="size-5 text-primary group-hover:text-lime-500" />
 					</div>
 					<div>
 						<CardTitle className="text-lg text-foreground">
@@ -37,42 +47,46 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 						</p>
 					</div>
 				</div>
-				{/* <DropdownMenu>
+				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button
 							variant="ghost"
 							size="icon"
 							className="text-muted-foreground"
 						>
-							<MoreVertical className="h-4 w-4" />
+							<MoreVertical className="size-4" />
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="bg-popover border-border">
 						<DropdownMenuItem
 							onClick={() => {
-								// setSelectedAccount(account);
-								// setIsDetailDialogOpen(true);
+								setIsDetailsOpen(true);
 							}}
 							className="cursor-pointer"
 						>
-							<Eye className="mr-2 h-4 w-4" />
+							<Eye className="mr-2 size-4" />
 							View Details
 						</DropdownMenuItem>
-						<DropdownMenuItem className="cursor-pointer">
-							<Pencil className="mr-2 h-4 w-4" />
+						{/* <DropdownMenuItem className="cursor-pointer">
+							<Pencil className="mr-2 size-4" />
 							Edit
 						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={() => {
-								// handleDeleteAccount(account.accountId)
+								handleDeleteAccount(account.accountId)
 							}}
 							className="text-destructive focus:text-destructive cursor-pointer"
 						>
-							<Trash2 className="mr-2 h-4 w-4" />
+							<Trash2 className="mr-2 size-4" />
 							Delete
-						</DropdownMenuItem>
+						</DropdownMenuItem> */}
 					</DropdownMenuContent>
-				</DropdownMenu> */}
+				</DropdownMenu>
+				<AccountDetailsModal
+					account={account}
+					open={isDetailsOpen}
+					onOpenChange={setIsDetailsOpen}
+				/>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="flex items-end justify-between">
@@ -84,9 +98,9 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 						</p>
 						{/* <div className="flex items-center gap-2 mt-1">
 							{account.change >= 0 ? (
-								<TrendingUp className="h-4 w-4 text-success" />
+								<TrendingUp className="size-4 text-success" />
 							) : (
-								<TrendingDown className="h-4 w-4 text-destructive" />
+								<TrendingDown className="size-4 text-destructive" />
 							)}
 							<span
 								className={`text-sm font-medium ${
