@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './pages/__root'
 import { Route as HomeLayoutRouteImport } from './pages/_home/layout'
 import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
 import { Route as HomeIndexRouteImport } from './pages/_home/index'
-import { Route as HomeAboutRouteImport } from './pages/_home/about'
 import { Route as HomeDashboardIndexRouteImport } from './pages/_home/dashboard/index'
 import { Route as HomeAccountsIndexRouteImport } from './pages/_home/accounts/index'
 import { Route as AuthRegisterIndexRouteImport } from './pages/_auth/register/index'
@@ -29,11 +28,6 @@ const AuthLayoutRoute = AuthLayoutRouteImport.update({
 const HomeIndexRoute = HomeIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => HomeLayoutRoute,
-} as any)
-const HomeAboutRoute = HomeAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => HomeLayoutRoute,
 } as any)
 const HomeDashboardIndexRoute = HomeDashboardIndexRouteImport.update({
@@ -59,7 +53,6 @@ const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof HomeIndexRoute
-  '/about': typeof HomeAboutRoute
   '/login/': typeof AuthLoginIndexRoute
   '/register/': typeof AuthRegisterIndexRoute
   '/accounts/': typeof HomeAccountsIndexRoute
@@ -67,7 +60,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof HomeIndexRoute
-  '/about': typeof HomeAboutRoute
   '/login': typeof AuthLoginIndexRoute
   '/register': typeof AuthRegisterIndexRoute
   '/accounts': typeof HomeAccountsIndexRoute
@@ -77,7 +69,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthLayoutRouteWithChildren
   '/_home': typeof HomeLayoutRouteWithChildren
-  '/_home/about': typeof HomeAboutRoute
   '/_home/': typeof HomeIndexRoute
   '/_auth/login/': typeof AuthLoginIndexRoute
   '/_auth/register/': typeof AuthRegisterIndexRoute
@@ -86,20 +77,13 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/login/'
-    | '/register/'
-    | '/accounts/'
-    | '/dashboard/'
+  fullPaths: '/' | '/login/' | '/register/' | '/accounts/' | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login' | '/register' | '/accounts' | '/dashboard'
+  to: '/' | '/login' | '/register' | '/accounts' | '/dashboard'
   id:
     | '__root__'
     | '/_auth'
     | '/_home'
-    | '/_home/about'
     | '/_home/'
     | '/_auth/login/'
     | '/_auth/register/'
@@ -133,13 +117,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof HomeIndexRouteImport
-      parentRoute: typeof HomeLayoutRoute
-    }
-    '/_home/about': {
-      id: '/_home/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof HomeAboutRouteImport
       parentRoute: typeof HomeLayoutRoute
     }
     '/_home/dashboard/': {
@@ -188,14 +165,12 @@ const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
 )
 
 interface HomeLayoutRouteChildren {
-  HomeAboutRoute: typeof HomeAboutRoute
   HomeIndexRoute: typeof HomeIndexRoute
   HomeAccountsIndexRoute: typeof HomeAccountsIndexRoute
   HomeDashboardIndexRoute: typeof HomeDashboardIndexRoute
 }
 
 const HomeLayoutRouteChildren: HomeLayoutRouteChildren = {
-  HomeAboutRoute: HomeAboutRoute,
   HomeIndexRoute: HomeIndexRoute,
   HomeAccountsIndexRoute: HomeAccountsIndexRoute,
   HomeDashboardIndexRoute: HomeDashboardIndexRoute,

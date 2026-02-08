@@ -41,6 +41,7 @@ export function CreateAccountModal() {
 			mutation: {
 				onSuccess: () => {
 					toast.success('Account created successfully');
+					// TODO: invalidate accounts query
 				},
 				onError: error => {
 					const description = error.message || 'An unexpected error occurred';

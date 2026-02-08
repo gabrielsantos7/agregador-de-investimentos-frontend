@@ -14,6 +14,8 @@ export interface AccountStockResponseDto {
 	stockId: string;
 	/** Name of the company issuing the stock */
 	name: string;
+	/** Full name of the company issuing the stock */
+	longName: string;
 	/** Total quantity of the stock in the portfolio */
 	quantity: number;
 	/** Average price paid per unit of the stock */

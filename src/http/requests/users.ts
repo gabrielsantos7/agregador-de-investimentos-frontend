@@ -324,8 +324,8 @@ export const useDeleteUser = <TError = ErrorType<unknown>, TContext = unknown>(
 	return useMutation(getDeleteUserMutationOptions(options), queryClient);
 };
 /**
- * Retrieves all investment portfolios linked to the user.
- * @summary List all accounts associated with a user.
+ * Retrieves all investment accounts associated with a user, including the full list of stocks and their real-time market prices.
+ * @summary List all accounts with their portfolios.
  */
 export const listAllAccounts = (userId: string, signal?: AbortSignal) => {
 	return orvalClient<AccountResponseDto[]>({
@@ -450,7 +450,7 @@ export function useListAllAccounts<
 	queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary List all accounts associated with a user.
+ * @summary List all accounts with their portfolios.
  */
 
 export function useListAllAccounts<

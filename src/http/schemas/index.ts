@@ -7,6 +7,7 @@
  */
 
 export * from './account';
+export * from './accountBalanceDto';
 export * from './accountResponseDto';
 export * from './accountStock';
 export * from './accountStockId';

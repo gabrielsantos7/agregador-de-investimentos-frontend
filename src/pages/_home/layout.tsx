@@ -18,12 +18,14 @@ export const Route = createFileRoute('/_home')({
 	},
 
 	loader: async ({ context: { queryClient } }) => {
-		const userData = await queryClient.ensureQueryData(getMeQueryOptions());
+		const user = await queryClient.ensureQueryData(getMeQueryOptions());
 
 		authStore.setState(prev => ({
 			...prev,
-			user: userData,
+			user,
 		}));
+
+		return { user };
 	},
 	component: Layout,
 });
