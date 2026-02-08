@@ -5,13 +5,15 @@
  * System for managing stock portfolios with real-time integration via Brapi.
  * OpenAPI spec version: 1.0
  */
+import type { AccountStockResponseDto } from './accountStockResponseDto';
 
 /**
  * Response with user account details
  */
 export interface AccountResponseDto {
 	/** Unique identifier of the account */
-	accountId?: string;
+	accountId: string;
 	/** Friendly description of the account */
-	description?: string;
+	description: string;
+	stocks?: AccountStockResponseDto[];
 }

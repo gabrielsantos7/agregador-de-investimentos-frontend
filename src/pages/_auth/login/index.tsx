@@ -170,7 +170,7 @@ function Login() {
 					Don&apos;t have an account?{' '}
 					<Link
 						to="/register"
-						className="text-emerald-400 hover:underline"
+						className="text-lime-400 hover:underline"
 						search={{
 							redirect,
 						}}

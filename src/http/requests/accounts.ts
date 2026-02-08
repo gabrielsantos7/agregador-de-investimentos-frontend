@@ -27,146 +27,6 @@ import { orvalClient } from '../../lib/orval/orval.client';
 import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
 
 /**
- * Returns all assets of an account with prices updated in real time via the Brapi API.
- * @summary List of portfolio shares.
- */
-export const listAllStocks = (accountId: string, signal?: AbortSignal) => {
-	return orvalClient<Blob>({
-		url: `/accounts/${accountId}/stocks`,
-		method: 'GET',
-		responseType: 'blob',
-		signal,
-	});
-};
-
-export const getListAllStocksQueryKey = (accountId: string) => {
-	return [`/accounts/${accountId}/stocks`] as const;
-};
-
-export const getListAllStocksQueryOptions = <
-	TData = Awaited<ReturnType<typeof listAllStocks>>,
-	TError = ErrorType<unknown>,
->(
-	accountId: string,
-	options?: {
-		query?: Partial<
-			UseQueryOptions<Awaited<ReturnType<typeof listAllStocks>>, TError, TData>
-		>;
-	}
-) => {
-	const { query: queryOptions } = options ?? {};
-
-	const queryKey =
-		queryOptions?.queryKey ?? getListAllStocksQueryKey(accountId);
-
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof listAllStocks>>> = ({
-		signal,
-	}) => listAllStocks(accountId, signal);
-
-	return {
-		queryKey,
-		queryFn,
-		enabled: !!accountId,
-		...queryOptions,
-	} as UseQueryOptions<
-		Awaited<ReturnType<typeof listAllStocks>>,
-		TError,
-		TData
-	> & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type ListAllStocksQueryResult = NonNullable<
-	Awaited<ReturnType<typeof listAllStocks>>
->;
-export type ListAllStocksQueryError = ErrorType<unknown>;
-
-export function useListAllStocks<
-	TData = Awaited<ReturnType<typeof listAllStocks>>,
-	TError = ErrorType<unknown>,
->(
-	accountId: string,
-	options: {
-		query: Partial<
-			UseQueryOptions<Awaited<ReturnType<typeof listAllStocks>>, TError, TData>
-		> &
-			Pick<
-				DefinedInitialDataOptions<
-					Awaited<ReturnType<typeof listAllStocks>>,
-					TError,
-					Awaited<ReturnType<typeof listAllStocks>>
-				>,
-				'initialData'
-			>;
-	},
-	queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-	queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useListAllStocks<
-	TData = Awaited<ReturnType<typeof listAllStocks>>,
-	TError = ErrorType<unknown>,
->(
-	accountId: string,
-	options?: {
-		query?: Partial<
-			UseQueryOptions<Awaited<ReturnType<typeof listAllStocks>>, TError, TData>
-		> &
-			Pick<
-				UndefinedInitialDataOptions<
-					Awaited<ReturnType<typeof listAllStocks>>,
-					TError,
-					Awaited<ReturnType<typeof listAllStocks>>
-				>,
-				'initialData'
-			>;
-	},
-	queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-	queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useListAllStocks<
-	TData = Awaited<ReturnType<typeof listAllStocks>>,
-	TError = ErrorType<unknown>,
->(
-	accountId: string,
-	options?: {
-		query?: Partial<
-			UseQueryOptions<Awaited<ReturnType<typeof listAllStocks>>, TError, TData>
-		>;
-	},
-	queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-	queryKey: DataTag<QueryKey, TData, TError>;
-};
-/**
- * @summary List of portfolio shares.
- */
-
-export function useListAllStocks<
-	TData = Awaited<ReturnType<typeof listAllStocks>>,
-	TError = ErrorType<unknown>,
->(
-	accountId: string,
-	options?: {
-		query?: Partial<
-			UseQueryOptions<Awaited<ReturnType<typeof listAllStocks>>, TError, TData>
-		>;
-	},
-	queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-	queryKey: DataTag<QueryKey, TData, TError>;
-} {
-	const queryOptions = getListAllStocksQueryOptions(accountId, options);
-
-	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-		TData,
-		TError
-	> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	return { ...query, queryKey: queryOptions.queryKey };
-}
-
-/**
  * Links a financial asset and the quantity purchased to a specific account.
  * @summary Associates an stock with an account.
  */
@@ -248,3 +108,141 @@ export const useAssociateStock = <TError = ErrorType<void>, TContext = unknown>(
 > => {
 	return useMutation(getAssociateStockMutationOptions(options), queryClient);
 };
+/**
+ * Calculates the sum of all stocks in the account based on real-time Brapi prices.
+ * @summary Get account total balance
+ */
+export const getBalance = (accountId: string, signal?: AbortSignal) => {
+	return orvalClient<Blob>({
+		url: `/accounts/${accountId}/balance`,
+		method: 'GET',
+		responseType: 'blob',
+		signal,
+	});
+};
+
+export const getGetBalanceQueryKey = (accountId: string) => {
+	return [`/accounts/${accountId}/balance`] as const;
+};
+
+export const getGetBalanceQueryOptions = <
+	TData = Awaited<ReturnType<typeof getBalance>>,
+	TError = ErrorType<unknown>,
+>(
+	accountId: string,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getBalance>>, TError, TData>
+		>;
+	}
+) => {
+	const { query: queryOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetBalanceQueryKey(accountId);
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getBalance>>> = ({
+		signal,
+	}) => getBalance(accountId, signal);
+
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!accountId,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getBalance>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetBalanceQueryResult = NonNullable<
+	Awaited<ReturnType<typeof getBalance>>
+>;
+export type GetBalanceQueryError = ErrorType<unknown>;
+
+export function useGetBalance<
+	TData = Awaited<ReturnType<typeof getBalance>>,
+	TError = ErrorType<unknown>,
+>(
+	accountId: string,
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getBalance>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getBalance>>,
+					TError,
+					Awaited<ReturnType<typeof getBalance>>
+				>,
+				'initialData'
+			>;
+	},
+	queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetBalance<
+	TData = Awaited<ReturnType<typeof getBalance>>,
+	TError = ErrorType<unknown>,
+>(
+	accountId: string,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getBalance>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getBalance>>,
+					TError,
+					Awaited<ReturnType<typeof getBalance>>
+				>,
+				'initialData'
+			>;
+	},
+	queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetBalance<
+	TData = Awaited<ReturnType<typeof getBalance>>,
+	TError = ErrorType<unknown>,
+>(
+	accountId: string,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getBalance>>, TError, TData>
+		>;
+	},
+	queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get account total balance
+ */
+
+export function useGetBalance<
+	TData = Awaited<ReturnType<typeof getBalance>>,
+	TError = ErrorType<unknown>,
+>(
+	accountId: string,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getBalance>>, TError, TData>
+		>;
+	},
+	queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+} {
+	const queryOptions = getGetBalanceQueryOptions(accountId, options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
+}

@@ -11,15 +11,17 @@
  */
 export interface AccountStockResponseDto {
 	/** Stock ticker symbol */
-	stockId?: string;
+	stockId: string;
 	/** Name of the company issuing the stock */
-	name?: string;
+	name: string;
+	/** Full name of the company issuing the stock */
+	longName: string;
 	/** Total quantity of the stock in the portfolio */
-	quantity?: number;
+	quantity: number;
 	/** Average price paid per unit of the stock */
-	price?: number;
+	price: number;
 	/** Total amount invested in the stock (quantity x average price) */
-	total?: number;
+	total: number;
 	/** URL of the logo of the company issuing the stock */
-	logoUrl?: string;
+	logoUrl: string;
 }

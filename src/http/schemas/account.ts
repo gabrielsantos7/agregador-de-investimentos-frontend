@@ -7,11 +7,9 @@
  */
 import type { AccountStock } from './accountStock';
 import type { BillingAddress } from './billingAddress';
-import type { User } from './user';
 
 export interface Account {
 	accountId?: string;
-	user?: User;
 	billingAddress?: BillingAddress;
 	description?: string;
 	accountStocks?: AccountStock[];

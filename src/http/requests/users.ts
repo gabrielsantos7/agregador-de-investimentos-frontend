@@ -21,21 +21,22 @@ import type {
 	UseQueryResult,
 } from '@tanstack/react-query';
 
-import type { CreateAccountDto, UpdateUserDto } from '../schemas';
+import type {
+	AccountResponseDto,
+	CreateAccountDto,
+	UpdateUserDto,
+	User,
+} from '../schemas';
 
 import { orvalClient } from '../../lib/orval/orval.client';
 import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
 
 /**
+ * Retrieves user details based on the provided user ID.
  * @summary Search user by ID.
  */
 export const getUserById = (userId: string, signal?: AbortSignal) => {
-	return orvalClient<Blob>({
-		url: `/users/${userId}`,
-		method: 'GET',
-		responseType: 'blob',
-		signal,
-	});
+	return orvalClient<User>({ url: `/users/${userId}`, method: 'GET', signal });
 };
 
 export const getGetUserByIdQueryKey = (userId: string) => {
@@ -44,7 +45,7 @@ export const getGetUserByIdQueryKey = (userId: string) => {
 
 export const getGetUserByIdQueryOptions = <
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -76,11 +77,11 @@ export const getGetUserByIdQueryOptions = <
 export type GetUserByIdQueryResult = NonNullable<
 	Awaited<ReturnType<typeof getUserById>>
 >;
-export type GetUserByIdQueryError = ErrorType<Blob>;
+export type GetUserByIdQueryError = ErrorType<void>;
 
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options: {
@@ -102,7 +103,7 @@ export function useGetUserById<
 };
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -124,7 +125,7 @@ export function useGetUserById<
 };
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -142,7 +143,7 @@ export function useGetUserById<
 
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -165,6 +166,7 @@ export function useGetUserById<
 }
 
 /**
+ * Updates the information of an existing user based on the provided user ID and new data.
  * @summary Update a user's data.
  */
 export const updateUserById = (
@@ -246,6 +248,7 @@ export const useUpdateUserById = <TError = ErrorType<void>, TContext = unknown>(
 	return useMutation(getUpdateUserByIdMutationOptions(options), queryClient);
 };
 /**
+ * Deletes a user based on the provided user ID.
  * @summary Remove a user from the system.
  */
 export const deleteUser = (userId: string, signal?: AbortSignal) => {
@@ -321,13 +324,13 @@ export const useDeleteUser = <TError = ErrorType<unknown>, TContext = unknown>(
 	return useMutation(getDeleteUserMutationOptions(options), queryClient);
 };
 /**
- * @summary Lists a user's accounts.
+ * Retrieves all investment accounts associated with a user, including the full list of stocks and their real-time market prices.
+ * @summary List all accounts with their portfolios.
  */
 export const listAllAccounts = (userId: string, signal?: AbortSignal) => {
-	return orvalClient<Blob>({
+	return orvalClient<AccountResponseDto[]>({
 		url: `/users/${userId}/accounts`,
 		method: 'GET',
-		responseType: 'blob',
 		signal,
 	});
 };
@@ -338,7 +341,7 @@ export const getListAllAccountsQueryKey = (userId: string) => {
 
 export const getListAllAccountsQueryOptions = <
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -374,11 +377,11 @@ export const getListAllAccountsQueryOptions = <
 export type ListAllAccountsQueryResult = NonNullable<
 	Awaited<ReturnType<typeof listAllAccounts>>
 >;
-export type ListAllAccountsQueryError = ErrorType<unknown>;
+export type ListAllAccountsQueryError = ErrorType<void>;
 
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options: {
@@ -404,7 +407,7 @@ export function useListAllAccounts<
 };
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -430,7 +433,7 @@ export function useListAllAccounts<
 };
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -447,12 +450,12 @@ export function useListAllAccounts<
 	queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary Lists a user's accounts.
+ * @summary List all accounts with their portfolios.
  */
 
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<void>,
 >(
 	userId: string,
 	options?: {
@@ -564,15 +567,11 @@ export const useCreateAccount = <
 	return useMutation(getCreateAccountMutationOptions(options), queryClient);
 };
 /**
+ * Retrieves a list of all users registered in the system.
  * @summary Lists all registered users.
  */
 export const listAllUsers = (signal?: AbortSignal) => {
-	return orvalClient<Blob>({
-		url: `/users/all`,
-		method: 'GET',
-		responseType: 'blob',
-		signal,
-	});
+	return orvalClient<User[]>({ url: `/users/all`, method: 'GET', signal });
 };
 
 export const getListAllUsersQueryKey = () => {
