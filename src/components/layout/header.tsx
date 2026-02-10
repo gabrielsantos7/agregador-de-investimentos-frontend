@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLogout } from '@/http/requests/authentication';
 import {
 	logout,
 	useAuth,
@@ -21,15 +22,19 @@ export function Header() {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const onLogout = () => {
-		logout();
-		navigate({
-			to: '/login',
-			replace: true,
-			search: { redirect: location.href },
-		});
-		toast.success('You have been logged out successfully.');
-	};
+	const {mutate, isPending} = useLogout({
+		mutation: {
+			onSuccess: () => {
+				logout();
+				navigate({
+					to: '/login',
+					replace: true,
+					search: { redirect: location.href },
+				});
+				toast.success('You have been logged out successfully.');
+			},
+		},
+	});
 
 	return (
 		<div className="flex items-end">
@@ -60,17 +65,18 @@ export function Header() {
 					{/* <DropdownMenuSeparator className="bg-border" />
                 <DropdownMenuItem asChild>
                   <Link href="/settings" className="cursor-pointer">
-                    <Settings className="mr-2 h-4 w-4" />
+                    <Settings className="mr-2 size-4" />
                     Settings
                   </Link> */}
 					{/* </DropdownMenuItem> */}
 					<DropdownMenuSeparator className="bg-border" />
 					<DropdownMenuItem
-						onClick={onLogout}
+						onClick={() => mutate()}
 						className="text-destructive focus:text-destructive cursor-pointer"
+						disabled={isPending}
 					>
-						<LogOut className="mr-2 h-4 w-4" />
-						Sign out
+						<LogOut className="mr-2 size-4" />
+						{isPending ? 'Logging out...' : 'Logout'}
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

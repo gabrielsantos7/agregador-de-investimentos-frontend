@@ -113,6 +113,76 @@ export const useRegister = <TError = ErrorType<void>, TContext = unknown>(
 	return useMutation(getRegisterMutationOptions(options), queryClient);
 };
 /**
+ * Invalidates the current JWT token by adding it to a server-side blacklist.
+ * @summary Logout user
+ */
+export const logout = (signal?: AbortSignal) => {
+	return orvalClient<void>({ url: `/auth/logout`, method: 'POST', signal });
+};
+
+export const getLogoutMutationOptions = <
+	TError = ErrorType<void>,
+	TContext = unknown,
+>(options?: {
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof logout>>,
+		TError,
+		void,
+		TContext
+	>;
+}): UseMutationOptions<
+	Awaited<ReturnType<typeof logout>>,
+	TError,
+	void,
+	TContext
+> => {
+	const mutationKey = ['logout'];
+	const { mutation: mutationOptions } = options
+		? options.mutation &&
+			'mutationKey' in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof logout>>,
+		void
+	> = () => {
+		return logout();
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type LogoutMutationResult = NonNullable<
+	Awaited<ReturnType<typeof logout>>
+>;
+
+export type LogoutMutationError = ErrorType<void>;
+
+/**
+ * @summary Logout user
+ */
+export const useLogout = <TError = ErrorType<void>, TContext = unknown>(
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof logout>>,
+			TError,
+			void,
+			TContext
+		>;
+	},
+	queryClient?: QueryClient
+): UseMutationResult<
+	Awaited<ReturnType<typeof logout>>,
+	TError,
+	void,
+	TContext
+> => {
+	return useMutation(getLogoutMutationOptions(options), queryClient);
+};
+/**
  * Validates credentials and generates a Bearer token to authenticate subsequent requests.
  * @summary Log in and receive the JWT token.
  */

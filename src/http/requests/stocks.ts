@@ -5,18 +5,153 @@
  * System for managing stock portfolios with real-time integration via Brapi.
  * OpenAPI spec version: 1.0
  */
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
+	DataTag,
+	DefinedInitialDataOptions,
+	DefinedUseQueryResult,
 	MutationFunction,
 	QueryClient,
+	QueryFunction,
+	QueryKey,
+	UndefinedInitialDataOptions,
 	UseMutationOptions,
 	UseMutationResult,
+	UseQueryOptions,
+	UseQueryResult,
 } from '@tanstack/react-query';
 
 import type { CreateStockDto } from '../schemas';
 
 import { orvalClient } from '../../lib/orval/orval.client';
 import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
+
+/**
+ * Returns a consolidated list of all stocks owned by the authenticated user across all their accounts.
+ * @summary List owned stocks
+ */
+export const getOwnedStocks = (signal?: AbortSignal) => {
+	return orvalClient<Blob>({
+		url: `/stocks`,
+		method: 'GET',
+		responseType: 'blob',
+		signal,
+	});
+};
+
+export const getGetOwnedStocksQueryKey = () => {
+	return [`/stocks`] as const;
+};
+
+export const getGetOwnedStocksQueryOptions = <
+	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
+	TError = ErrorType<unknown>,
+>(options?: {
+	query?: Partial<
+		UseQueryOptions<Awaited<ReturnType<typeof getOwnedStocks>>, TError, TData>
+	>;
+}) => {
+	const { query: queryOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetOwnedStocksQueryKey();
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getOwnedStocks>>> = ({
+		signal,
+	}) => getOwnedStocks(signal);
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getOwnedStocks>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetOwnedStocksQueryResult = NonNullable<
+	Awaited<ReturnType<typeof getOwnedStocks>>
+>;
+export type GetOwnedStocksQueryError = ErrorType<unknown>;
+
+export function useGetOwnedStocks<
+	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
+	TError = ErrorType<unknown>,
+>(
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getOwnedStocks>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getOwnedStocks>>,
+					TError,
+					Awaited<ReturnType<typeof getOwnedStocks>>
+				>,
+				'initialData'
+			>;
+	},
+	queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetOwnedStocks<
+	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
+	TError = ErrorType<unknown>,
+>(
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getOwnedStocks>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getOwnedStocks>>,
+					TError,
+					Awaited<ReturnType<typeof getOwnedStocks>>
+				>,
+				'initialData'
+			>;
+	},
+	queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetOwnedStocks<
+	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
+	TError = ErrorType<unknown>,
+>(
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getOwnedStocks>>, TError, TData>
+		>;
+	},
+	queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List owned stocks
+ */
+
+export function useGetOwnedStocks<
+	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
+	TError = ErrorType<unknown>,
+>(
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getOwnedStocks>>, TError, TData>
+		>;
+	},
+	queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+	queryKey: DataTag<QueryKey, TData, TError>;
+} {
+	const queryOptions = getGetOwnedStocksQueryOptions(options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * Adds a ticker (ex: PETR4) to the system's database.
