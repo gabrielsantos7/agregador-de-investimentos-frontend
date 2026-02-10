@@ -9,7 +9,7 @@ interface AuthStore {
 	token: string | null;
 }
 
-const persistedToken = localStorage.getItem(AUTH_TOKEN_KEY);
+const persistedToken = localStorage.getItem(AUTH_TOKEN_KEY) || null;
 
 export const authStore = new Store<AuthStore>({
 	user: null,
