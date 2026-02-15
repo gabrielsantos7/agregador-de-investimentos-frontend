@@ -18,6 +18,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
+import logo from '/logo.png';
 import { ThemeToggler } from '../theme/theme-toggler';
 
 interface MenuItem {
@@ -53,18 +54,16 @@ export function AppSidebar() {
 				{open ? (
 					<div className="flex items-center justify-between h-16 px-6 border-b border-sidebar-border">
 						<Link to="/dashboard" className="flex items-center gap-3">
-							<div className="size-9 rounded-lg bg-lime-400 flex items-center justify-center">
-								<TrendingUp className="size-5 text-background" />
+							<div className="flex items-center gap-4">
+								<img src={logo} alt="Logo" className="size-10" />
+								<span className="text-xl font-bold text-foreground">
+									StockFlow
+								</span>
 							</div>
-							<span className="text-xl font-bold text-sidebar-foreground">
-								StockFlow
-							</span>
 						</Link>
 					</div>
 				) : (
-					<div className="size-8 rounded-lg bg-lime-400 flex items-center justify-center">
-						<TrendingUp className="size-5 text-background" />
-					</div>
+					<img src={logo} alt="Logo" className="size-6" />
 				)}
 			</SidebarHeader>
 			<Separator orientation="horizontal" />
@@ -77,7 +76,7 @@ export function AppSidebar() {
 									<SidebarMenuButton asChild>
 										<Link
 											to={item.url}
-											className="text-muted-foreground [&.active]:bg-lime-500 [&.active]:text-foreground font-semibold"
+											className="text-muted-foreground [&.active]:bg-emerald-500 [&.active]:text-foreground font-semibold"
 										>
 											<item.icon className="size-5" strokeWidth={2.5} />
 											<span>{item.title}</span>

@@ -42,7 +42,7 @@ export function Header() {
 				<DropdownMenuTrigger asChild>
 					<Button variant="ghost" className="relative size-9 rounded-full">
 						<Avatar className="size-9">
-							<AvatarFallback className="bg-lime-500/10 text-lime-400">
+							<AvatarFallback className="bg-emerald-500/10 text-emerald-400">
 								{user?.username?.charAt(0).toUpperCase() || 'U'}
 							</AvatarFallback>
 						</Avatar>
