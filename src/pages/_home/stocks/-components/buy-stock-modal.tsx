@@ -37,7 +37,11 @@ const formDefaultValues: BuyStockSchema = {
 	accountId: '',
 };
 
-export function BuyStockModal({ accounts }: { accounts: AccountResponseDto[] }) {
+export function BuyStockModal({
+	accounts,
+}: {
+	accounts: AccountResponseDto[];
+}) {
 	const { mutate: buyStock, isPending: isBuyingStock } = useBuyStock<ApiError>({
 		mutation: {
 			onSuccess: () => {
@@ -97,7 +101,7 @@ export function BuyStockModal({ accounts }: { accounts: AccountResponseDto[] }) 
 										<Select
 											value={field.state.value}
 											onValueChange={field.handleChange}
-                      disabled={isBuyingStock}
+											disabled={isBuyingStock}
 										>
 											<SelectTrigger>
 												<SelectValue placeholder="Select an account" />
@@ -155,7 +159,7 @@ export function BuyStockModal({ accounts }: { accounts: AccountResponseDto[] }) 
 											id={field.name}
 											type="number"
 											step={1}
-                      min={1}
+											min={1}
 											value={field.state.value}
 											onBlur={field.handleBlur}
 											onChange={e => field.handleChange(Number(e.target.value))}

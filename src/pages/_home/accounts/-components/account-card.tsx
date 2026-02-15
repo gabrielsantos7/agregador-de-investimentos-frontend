@@ -31,12 +31,12 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 	return (
 		<Card
 			key={account.accountId}
-			className="bg-card border-border hover:border-lime-500 duration-300 transition-colors group"
+			className="bg-card border-border hover:border-emerald-500 duration-300 transition-colors group"
 		>
 			<CardHeader className="flex flex-row items-start justify-between pb-2">
 				<div className="flex items-center gap-3">
-					<div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-lime-500/10">
-						<Wallet className="size-5 text-primary group-hover:text-lime-500" />
+					<div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-emerald-500/10">
+						<Wallet className="size-5 text-primary group-hover:text-emerald-500" />
 					</div>
 					<div>
 						<CardTitle className="text-lg text-foreground">
