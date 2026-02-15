@@ -8,12 +8,12 @@
 import type { AccountStockResponseDto } from './accountStockResponseDto';
 
 /**
- * Response with user account details
+ * Response with user account details.
  */
 export interface AccountResponseDto {
-	/** Unique identifier of the account */
+	/** Unique identifier of the account. */
 	accountId: string;
-	/** Friendly description of the account */
+	/** Friendly description of the account. */
 	description: string;
 	stocks?: AccountStockResponseDto[];
 }

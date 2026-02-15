@@ -24,6 +24,7 @@ import type {
 import type {
 	AuthResponseDto,
 	CreateUserDto,
+	ErrorResponseDto,
 	LoginDto,
 	UserDto,
 } from '../schemas';
@@ -49,7 +50,7 @@ export const register = (
 };
 
 export const getRegisterMutationOptions = <
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(options?: {
 	mutation?: UseMutationOptions<
@@ -89,12 +90,15 @@ export type RegisterMutationResult = NonNullable<
 	Awaited<ReturnType<typeof register>>
 >;
 export type RegisterMutationBody = BodyType<CreateUserDto>;
-export type RegisterMutationError = ErrorType<void>;
+export type RegisterMutationError = ErrorType<ErrorResponseDto>;
 
 /**
  * @summary Create/Register a new user.
  */
-export const useRegister = <TError = ErrorType<void>, TContext = unknown>(
+export const useRegister = <
+	TError = ErrorType<ErrorResponseDto>,
+	TContext = unknown,
+>(
 	options?: {
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<typeof register>>,
@@ -113,7 +117,7 @@ export const useRegister = <TError = ErrorType<void>, TContext = unknown>(
 	return useMutation(getRegisterMutationOptions(options), queryClient);
 };
 /**
- * Invalidates the current JWT token by adding it to a server-side blacklist.
+ * Invalidates the current Bearer token. Requires an active session.
  * @summary Logout user
  */
 export const logout = (signal?: AbortSignal) => {
@@ -121,7 +125,7 @@ export const logout = (signal?: AbortSignal) => {
 };
 
 export const getLogoutMutationOptions = <
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(options?: {
 	mutation?: UseMutationOptions<
@@ -159,12 +163,15 @@ export type LogoutMutationResult = NonNullable<
 	Awaited<ReturnType<typeof logout>>
 >;
 
-export type LogoutMutationError = ErrorType<void>;
+export type LogoutMutationError = ErrorType<ErrorResponseDto>;
 
 /**
  * @summary Logout user
  */
-export const useLogout = <TError = ErrorType<void>, TContext = unknown>(
+export const useLogout = <
+	TError = ErrorType<ErrorResponseDto>,
+	TContext = unknown,
+>(
 	options?: {
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<typeof logout>>,
@@ -197,7 +204,7 @@ export const login = (loginDto: BodyType<LoginDto>, signal?: AbortSignal) => {
 };
 
 export const getLoginMutationOptions = <
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(options?: {
 	mutation?: UseMutationOptions<
@@ -237,12 +244,15 @@ export type LoginMutationResult = NonNullable<
 	Awaited<ReturnType<typeof login>>
 >;
 export type LoginMutationBody = BodyType<LoginDto>;
-export type LoginMutationError = ErrorType<void>;
+export type LoginMutationError = ErrorType<ErrorResponseDto>;
 
 /**
  * @summary Log in and receive the JWT token.
  */
-export const useLogin = <TError = ErrorType<void>, TContext = unknown>(
+export const useLogin = <
+	TError = ErrorType<ErrorResponseDto>,
+	TContext = unknown,
+>(
 	options?: {
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<typeof login>>,
@@ -261,8 +271,8 @@ export const useLogin = <TError = ErrorType<void>, TContext = unknown>(
 	return useMutation(getLoginMutationOptions(options), queryClient);
 };
 /**
- * Returns the currently authenticated user based on the JWT token
- * @summary Get authenticated user
+ * Extracts user data from the JWT token provided in the Authorization header.
+ * @summary Get current authenticated user
  */
 export const me = (signal?: AbortSignal) => {
 	return orvalClient<UserDto>({ url: `/auth/me`, method: 'GET', signal });
@@ -274,7 +284,7 @@ export const getMeQueryKey = () => {
 
 export const getMeQueryOptions = <
 	TData = Awaited<ReturnType<typeof me>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(options?: {
 	query?: Partial<
 		UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>
@@ -295,11 +305,11 @@ export const getMeQueryOptions = <
 };
 
 export type MeQueryResult = NonNullable<Awaited<ReturnType<typeof me>>>;
-export type MeQueryError = ErrorType<Blob>;
+export type MeQueryError = ErrorType<ErrorResponseDto>;
 
 export function useMe<
 	TData = Awaited<ReturnType<typeof me>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options: {
 		query: Partial<
@@ -320,7 +330,7 @@ export function useMe<
 };
 export function useMe<
 	TData = Awaited<ReturnType<typeof me>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
@@ -341,7 +351,7 @@ export function useMe<
 };
 export function useMe<
 	TData = Awaited<ReturnType<typeof me>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
@@ -353,12 +363,12 @@ export function useMe<
 	queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary Get authenticated user
+ * @summary Get current authenticated user
  */
 
 export function useMe<
 	TData = Awaited<ReturnType<typeof me>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<

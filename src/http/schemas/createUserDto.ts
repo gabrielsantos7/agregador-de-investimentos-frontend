@@ -7,15 +7,15 @@
  */
 
 /**
- * Request payload to create a new user
+ * Request payload to create a new user.
  */
 export interface CreateUserDto {
-	/** Unique username used to identify the user in the system */
+	/** Unique username used to identify the user in the system. */
 	username: string;
-	/** User email address */
+	/** User email address. */
 	email: string;
 	/**
-	 * User password with a minimum of 8 characters
+	 * User password with a minimum of 8 characters.
 	 * @minLength 8
 	 * @maxLength 2147483647
 	 */

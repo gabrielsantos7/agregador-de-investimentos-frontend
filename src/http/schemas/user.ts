@@ -14,6 +14,7 @@ export interface User {
 	email?: string;
 	password?: string;
 	role?: UserRole;
+	cash?: number;
 	creationTimestamp?: string;
 	updateTimestamp?: string;
 	accounts?: Account[];

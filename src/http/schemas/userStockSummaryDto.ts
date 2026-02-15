@@ -7,10 +7,10 @@
  */
 
 /**
- * Summary of a stock owned by the user
+ * Summary of a stock owned by the user.
  */
 export interface UserStockSummaryDto {
-	stockId?: string;
-	/** Total quantity owned across all accounts */
-	totalQuantity?: number;
+	stockId: string;
+	/** Total quantity owned across all accounts. */
+	totalQuantity: number;
 }

@@ -7,21 +7,21 @@
  */
 
 /**
- * Represents a stock position in the user's portfolio
+ * Represents a stock position in the user's portfolio.
  */
 export interface AccountStockResponseDto {
-	/** Stock ticker symbol */
+	/** Stock ticker symbol. */
 	stockId: string;
-	/** Name of the company issuing the stock */
+	/** Name of the company issuing the stock. */
 	name: string;
-	/** Full name of the company issuing the stock */
+	/** Full name of the company issuing the stock. */
 	longName: string;
-	/** Total quantity of the stock in the portfolio */
+	/** Total quantity of the stock in the portfolio. */
 	quantity: number;
-	/** Average price paid per unit of the stock */
+	/** Average price paid per unit of the stock. */
 	price: number;
-	/** Total amount invested in the stock (quantity x average price) */
+	/** Total amount invested in the stock (quantity x average price). */
 	total: number;
-	/** URL of the logo of the company issuing the stock */
+	/** URL of the logo of the company issuing the stock. */
 	logoUrl: string;
 }

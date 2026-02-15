@@ -7,15 +7,15 @@
  */
 
 /**
- * Request payload to create a new stock
+ * Request payload to create a new stock.
  */
 export interface CreateStockDto {
 	/**
-	 * Stock trading code (ticker)
+	 * Stock trading code (ticker).
 	 * @minLength 4
 	 * @maxLength 10
 	 */
 	stockId: string;
-	/** Company legal or trade name */
+	/** Company legal or trade name. */
 	description: string;
 }

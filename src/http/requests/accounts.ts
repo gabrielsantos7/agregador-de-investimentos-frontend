@@ -21,21 +21,25 @@ import type {
 	UseQueryResult,
 } from '@tanstack/react-query';
 
-import type { AssociateAccountStockDto } from '../schemas';
+import type {
+	AccountBalanceDto,
+	AssociateAccountStockDto,
+	ErrorResponseDto,
+} from '../schemas';
 
 import { orvalClient } from '../../lib/orval/orval.client';
 import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
 
 /**
- * Links a financial asset and the quantity purchased to a specific account.
- * @summary Associates an stock with an account.
+ * Links a financial asset (ticker) and the quantity purchased to a specific account. If the asset is already associated, it updates the position.
+ * @summary Associate a stock with an account
  */
 export const associateStock = (
 	accountId: string,
 	associateAccountStockDto: BodyType<AssociateAccountStockDto>,
 	signal?: AbortSignal
 ) => {
-	return orvalClient<void>({
+	return orvalClient<unknown>({
 		url: `/accounts/${accountId}/stocks`,
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -45,7 +49,7 @@ export const associateStock = (
 };
 
 export const getAssociateStockMutationOptions = <
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(options?: {
 	mutation?: UseMutationOptions<
@@ -85,12 +89,15 @@ export type AssociateStockMutationResult = NonNullable<
 	Awaited<ReturnType<typeof associateStock>>
 >;
 export type AssociateStockMutationBody = BodyType<AssociateAccountStockDto>;
-export type AssociateStockMutationError = ErrorType<void>;
+export type AssociateStockMutationError = ErrorType<ErrorResponseDto>;
 
 /**
- * @summary Associates an stock with an account.
+ * @summary Associate a stock with an account
  */
-export const useAssociateStock = <TError = ErrorType<void>, TContext = unknown>(
+export const useAssociateStock = <
+	TError = ErrorType<ErrorResponseDto>,
+	TContext = unknown,
+>(
 	options?: {
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<typeof associateStock>>,
@@ -109,14 +116,13 @@ export const useAssociateStock = <TError = ErrorType<void>, TContext = unknown>(
 	return useMutation(getAssociateStockMutationOptions(options), queryClient);
 };
 /**
- * Calculates the sum of all stocks in the account based on real-time Brapi prices.
+ * Calculates the total equity by summing all stocks owned by the account, using real-time prices from the Brapi API.
  * @summary Get account total balance
  */
 export const getBalance = (accountId: string, signal?: AbortSignal) => {
-	return orvalClient<Blob>({
+	return orvalClient<AccountBalanceDto>({
 		url: `/accounts/${accountId}/balance`,
 		method: 'GET',
-		responseType: 'blob',
 		signal,
 	});
 };
@@ -127,7 +133,7 @@ export const getGetBalanceQueryKey = (accountId: string) => {
 
 export const getGetBalanceQueryOptions = <
 	TData = Awaited<ReturnType<typeof getBalance>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto | Blob>,
 >(
 	accountId: string,
 	options?: {
@@ -159,11 +165,11 @@ export const getGetBalanceQueryOptions = <
 export type GetBalanceQueryResult = NonNullable<
 	Awaited<ReturnType<typeof getBalance>>
 >;
-export type GetBalanceQueryError = ErrorType<unknown>;
+export type GetBalanceQueryError = ErrorType<ErrorResponseDto | Blob>;
 
 export function useGetBalance<
 	TData = Awaited<ReturnType<typeof getBalance>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto | Blob>,
 >(
 	accountId: string,
 	options: {
@@ -185,7 +191,7 @@ export function useGetBalance<
 };
 export function useGetBalance<
 	TData = Awaited<ReturnType<typeof getBalance>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto | Blob>,
 >(
 	accountId: string,
 	options?: {
@@ -207,7 +213,7 @@ export function useGetBalance<
 };
 export function useGetBalance<
 	TData = Awaited<ReturnType<typeof getBalance>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto | Blob>,
 >(
 	accountId: string,
 	options?: {
@@ -225,7 +231,7 @@ export function useGetBalance<
 
 export function useGetBalance<
 	TData = Awaited<ReturnType<typeof getBalance>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto | Blob>,
 >(
 	accountId: string,
 	options?: {

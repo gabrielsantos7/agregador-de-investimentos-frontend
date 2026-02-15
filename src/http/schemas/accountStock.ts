@@ -14,4 +14,5 @@ export interface AccountStock {
 	account?: Account;
 	stock?: Stock;
 	quantity?: number;
+	averagePrice?: number;
 }

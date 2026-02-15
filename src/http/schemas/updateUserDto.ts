@@ -7,13 +7,13 @@
  */
 
 /**
- * Request payload to update user information
+ * Request payload to update user information.
  */
 export interface UpdateUserDto {
-	/** New username to replace the current one */
+	/** New username to replace the current one. */
 	username?: string;
 	/**
-	 * New user password with a minimum of 8 characters
+	 * New user password with a minimum of 8 characters.
 	 * @minLength 8
 	 * @maxLength 2147483647
 	 */

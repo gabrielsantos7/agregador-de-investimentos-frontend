@@ -7,10 +7,12 @@
  */
 
 /**
- * Role or profile assigned to the user.
+ * Type of the trade operation.
  */
-export type UserDtoRole = (typeof UserDtoRole)[keyof typeof UserDtoRole];
+export type TransactionResponseType =
+	(typeof TransactionResponseType)[keyof typeof TransactionResponseType];
 
-export const UserDtoRole = {
-	ADMIN: 'ADMIN',
+export const TransactionResponseType = {
+	BUY: 'BUY',
+	SELL: 'SELL',
 } as const;

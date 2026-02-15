@@ -7,15 +7,15 @@
  */
 
 /**
- * Request payload to create a new account
+ * Request payload to create a new account.
  */
 export interface CreateAccountDto {
-	/** Human-readable description of the account */
+	/** Human-readable description of the account. */
 	description: string;
-	/** Street name of the account address */
+	/** Street name of the account address. */
 	street: string;
 	/**
-	 * Street number of the account address
+	 * Street number of the account address.
 	 * @minimum 1
 	 */
 	number: number;

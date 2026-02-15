@@ -8,11 +8,11 @@
 import type { UserDto } from './userDto';
 
 /**
- * Response after a successful login
+ * Response after a successful login.
  */
 export interface AuthResponseDto {
-	/** JWT token used for authenticated requests */
+	/** JWT token used for authenticated requests. */
 	accessToken: string;
-	/** The authenticated user details */
+	/** The authenticated user details. */
 	user: UserDto;
 }

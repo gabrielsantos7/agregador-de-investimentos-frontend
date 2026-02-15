@@ -21,20 +21,23 @@ import type {
 	UseQueryResult,
 } from '@tanstack/react-query';
 
-import type { CreateStockDto } from '../schemas';
+import type {
+	CreateStockDto,
+	ErrorResponseDto,
+	UserStockSummaryDto,
+} from '../schemas';
 
 import { orvalClient } from '../../lib/orval/orval.client';
 import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
 
 /**
- * Returns a consolidated list of all stocks owned by the authenticated user across all their accounts.
- * @summary List owned stocks
+ * Calculates and returns a consolidated summary of all assets owned by the authenticated user, including total quantities and average prices.
+ * @summary List all owned stocks
  */
 export const getOwnedStocks = (signal?: AbortSignal) => {
-	return orvalClient<Blob>({
+	return orvalClient<UserStockSummaryDto[]>({
 		url: `/stocks`,
 		method: 'GET',
-		responseType: 'blob',
 		signal,
 	});
 };
@@ -45,7 +48,7 @@ export const getGetOwnedStocksQueryKey = () => {
 
 export const getGetOwnedStocksQueryOptions = <
 	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 >(options?: {
 	query?: Partial<
 		UseQueryOptions<Awaited<ReturnType<typeof getOwnedStocks>>, TError, TData>
@@ -69,11 +72,11 @@ export const getGetOwnedStocksQueryOptions = <
 export type GetOwnedStocksQueryResult = NonNullable<
 	Awaited<ReturnType<typeof getOwnedStocks>>
 >;
-export type GetOwnedStocksQueryError = ErrorType<unknown>;
+export type GetOwnedStocksQueryError = ErrorType<ErrorResponseDto>;
 
 export function useGetOwnedStocks<
 	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options: {
 		query: Partial<
@@ -94,7 +97,7 @@ export function useGetOwnedStocks<
 };
 export function useGetOwnedStocks<
 	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
@@ -115,7 +118,7 @@ export function useGetOwnedStocks<
 };
 export function useGetOwnedStocks<
 	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
@@ -127,12 +130,12 @@ export function useGetOwnedStocks<
 	queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary List owned stocks
+ * @summary List all owned stocks
  */
 
 export function useGetOwnedStocks<
 	TData = Awaited<ReturnType<typeof getOwnedStocks>>,
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
@@ -154,14 +157,14 @@ export function useGetOwnedStocks<
 }
 
 /**
- * Adds a ticker (ex: PETR4) to the system's database.
- * @summary Register a new stock.
+ * Adds a valid ticker (ex: AAPL, ITUB4) to the system's database so it can be traded.
+ * @summary Register a new stock in the catalog
  */
 export const createStock = (
 	createStockDto: BodyType<CreateStockDto>,
 	signal?: AbortSignal
 ) => {
-	return orvalClient<void>({
+	return orvalClient<unknown>({
 		url: `/stocks`,
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -171,7 +174,7 @@ export const createStock = (
 };
 
 export const getCreateStockMutationOptions = <
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(options?: {
 	mutation?: UseMutationOptions<
@@ -211,12 +214,15 @@ export type CreateStockMutationResult = NonNullable<
 	Awaited<ReturnType<typeof createStock>>
 >;
 export type CreateStockMutationBody = BodyType<CreateStockDto>;
-export type CreateStockMutationError = ErrorType<unknown>;
+export type CreateStockMutationError = ErrorType<ErrorResponseDto>;
 
 /**
- * @summary Register a new stock.
+ * @summary Register a new stock in the catalog
  */
-export const useCreateStock = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useCreateStock = <
+	TError = ErrorType<ErrorResponseDto>,
+	TContext = unknown,
+>(
 	options?: {
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<typeof createStock>>,

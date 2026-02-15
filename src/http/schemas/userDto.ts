@@ -8,15 +8,15 @@
 import type { UserDtoRole } from './userDtoRole';
 
 /**
- * Represents the authenticated user
+ * Represents the authenticated user.
  */
 export interface UserDto {
-	/** Unique identifier of the user */
+	/** Unique identifier of the user. */
 	userId: string;
-	/** Unique username used to identify the user in the system */
+	/** Unique username used to identify the user in the system. */
 	username: string;
-	/** User email address */
+	/** User email address. */
 	email: string;
-	/** Role or profile assigned to the user */
+	/** Role or profile assigned to the user. */
 	role: UserDtoRole;
 }

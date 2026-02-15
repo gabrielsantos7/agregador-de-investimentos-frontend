@@ -7,13 +7,13 @@
  */
 
 /**
- * Request payload to associate a stock with an account
+ * Request payload to associate a stock with an account.
  */
 export interface AssociateAccountStockDto {
-	/** Stock trading code (ticker) to be associated with the account */
+	/** Stock trading code (ticker) to be associated with the account. */
 	stockId: string;
 	/**
-	 * Number of shares to associate with the account
+	 * Number of shares to associate with the account.
 	 * @minimum 1
 	 */
 	quantity: number;

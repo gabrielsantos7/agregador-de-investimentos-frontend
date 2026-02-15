@@ -16,8 +16,12 @@ export const Route = createFileRoute('/_home/accounts/')({
 	loader: async ({ context: { queryClient }, parentMatchPromise }) => {
 		const user = (await parentMatchPromise).loaderData?.user;
 
+		if (!user) {
+			throw new Response('User not found', { status: 404 });
+		}
+
 		await queryClient.ensureQueryData(
-			getListAllAccountsQueryOptions(user!.userId)
+			getListAllAccountsQueryOptions(user.userId)
 		);
 	},
 	pendingComponent: () => <Loader />,

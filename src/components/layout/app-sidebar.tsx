@@ -37,6 +37,11 @@ const menuItems: MenuItem[] = [
 		url: '/accounts',
 		icon: Wallet,
 	},
+	{
+		title: 'Stocks',
+		url: '/stocks',
+		icon: TrendingUp,
+	},
 ];
 
 export function AppSidebar() {

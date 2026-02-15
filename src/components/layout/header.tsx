@@ -22,7 +22,7 @@ export function Header() {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const {mutate, isPending} = useLogout({
+	const { mutate, isPending } = useLogout({
 		mutation: {
 			onSuccess: () => {
 				logout();

@@ -10,10 +10,10 @@
  * Data Transfer Object representing the total financial balance of an account.
  */
 export interface AccountBalanceDto {
-	/** Unique identifier of the account (UUID) */
+	/** Unique identifier of the account (UUID). */
 	accountId?: string;
-	/** The sum of all assets in the account, multiplied by their current market price */
+	/** The sum of all assets in the account, multiplied by their current market price. */
 	totalBalance?: number;
-	/** The exact moment the balance was calculated based on real-time data */
+	/** The exact moment the balance was calculated based on real-time data. */
 	updatedAt?: string;
 }

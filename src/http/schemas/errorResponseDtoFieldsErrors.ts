@@ -7,10 +7,6 @@
  */
 
 /**
- * Role or profile assigned to the user.
+ * Map containing specific field names and their respective validation error messages. Can be null if not a validation error.
  */
-export type UserDtoRole = (typeof UserDtoRole)[keyof typeof UserDtoRole];
-
-export const UserDtoRole = {
-	ADMIN: 'ADMIN',
-} as const;
+export type ErrorResponseDtoFieldsErrors = { [key: string]: string };

@@ -24,6 +24,7 @@ import type {
 import type {
 	AccountResponseDto,
 	CreateAccountDto,
+	ErrorResponseDto,
 	UpdateUserDto,
 	User,
 } from '../schemas';
@@ -32,8 +33,8 @@ import { orvalClient } from '../../lib/orval/orval.client';
 import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
 
 /**
- * Retrieves user details based on the provided user ID.
- * @summary Search user by ID.
+ * Retrieves full details of a specific user. Use this to fetch profile information.
+ * @summary Search user by ID
  */
 export const getUserById = (userId: string, signal?: AbortSignal) => {
 	return orvalClient<User>({ url: `/users/${userId}`, method: 'GET', signal });
@@ -45,7 +46,7 @@ export const getGetUserByIdQueryKey = (userId: string) => {
 
 export const getGetUserByIdQueryOptions = <
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -77,11 +78,11 @@ export const getGetUserByIdQueryOptions = <
 export type GetUserByIdQueryResult = NonNullable<
 	Awaited<ReturnType<typeof getUserById>>
 >;
-export type GetUserByIdQueryError = ErrorType<void>;
+export type GetUserByIdQueryError = ErrorType<ErrorResponseDto>;
 
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options: {
@@ -103,7 +104,7 @@ export function useGetUserById<
 };
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -125,7 +126,7 @@ export function useGetUserById<
 };
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -138,12 +139,12 @@ export function useGetUserById<
 	queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary Search user by ID.
+ * @summary Search user by ID
  */
 
 export function useGetUserById<
 	TData = Awaited<ReturnType<typeof getUserById>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -166,8 +167,8 @@ export function useGetUserById<
 }
 
 /**
- * Updates the information of an existing user based on the provided user ID and new data.
- * @summary Update a user's data.
+ * Modifies existing user information (e.g., name or email). Only provided fields will be updated.
+ * @summary Update user data
  */
 export const updateUserById = (
 	userId: string,
@@ -184,7 +185,7 @@ export const updateUserById = (
 };
 
 export const getUpdateUserByIdMutationOptions = <
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(options?: {
 	mutation?: UseMutationOptions<
@@ -224,12 +225,15 @@ export type UpdateUserByIdMutationResult = NonNullable<
 	Awaited<ReturnType<typeof updateUserById>>
 >;
 export type UpdateUserByIdMutationBody = BodyType<UpdateUserDto>;
-export type UpdateUserByIdMutationError = ErrorType<void>;
+export type UpdateUserByIdMutationError = ErrorType<ErrorResponseDto>;
 
 /**
- * @summary Update a user's data.
+ * @summary Update user data
  */
-export const useUpdateUserById = <TError = ErrorType<void>, TContext = unknown>(
+export const useUpdateUserById = <
+	TError = ErrorType<ErrorResponseDto>,
+	TContext = unknown,
+>(
 	options?: {
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<typeof updateUserById>>,
@@ -252,7 +256,7 @@ export const useUpdateUserById = <TError = ErrorType<void>, TContext = unknown>(
  * @summary Remove a user from the system.
  */
 export const deleteUser = (userId: string, signal?: AbortSignal) => {
-	return orvalClient<void>({
+	return orvalClient<unknown>({
 		url: `/users/${userId}`,
 		method: 'DELETE',
 		signal,
@@ -324,8 +328,8 @@ export const useDeleteUser = <TError = ErrorType<unknown>, TContext = unknown>(
 	return useMutation(getDeleteUserMutationOptions(options), queryClient);
 };
 /**
- * Retrieves all investment accounts associated with a user, including the full list of stocks and their real-time market prices.
- * @summary List all accounts with their portfolios.
+ * Retrieves all accounts owned by the user, including consolidated stock portfolios and real-time market values.
+ * @summary List all user accounts
  */
 export const listAllAccounts = (userId: string, signal?: AbortSignal) => {
 	return orvalClient<AccountResponseDto[]>({
@@ -341,7 +345,7 @@ export const getListAllAccountsQueryKey = (userId: string) => {
 
 export const getListAllAccountsQueryOptions = <
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -377,11 +381,11 @@ export const getListAllAccountsQueryOptions = <
 export type ListAllAccountsQueryResult = NonNullable<
 	Awaited<ReturnType<typeof listAllAccounts>>
 >;
-export type ListAllAccountsQueryError = ErrorType<void>;
+export type ListAllAccountsQueryError = ErrorType<ErrorResponseDto>;
 
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options: {
@@ -407,7 +411,7 @@ export function useListAllAccounts<
 };
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -433,7 +437,7 @@ export function useListAllAccounts<
 };
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -450,12 +454,12 @@ export function useListAllAccounts<
 	queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary List all accounts with their portfolios.
+ * @summary List all user accounts
  */
 
 export function useListAllAccounts<
 	TData = Awaited<ReturnType<typeof listAllAccounts>>,
-	TError = ErrorType<void>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	userId: string,
 	options?: {
@@ -482,8 +486,8 @@ export function useListAllAccounts<
 }
 
 /**
- * Opens a new investment portfolio associated with the user and sets the billing address.
- * @summary Create an account for the user.
+ * Initializes a new investment portfolio (Account) for a specific user.
+ * @summary Create an account for the user
  */
 export const createAccount = (
 	userId: string,
@@ -500,7 +504,7 @@ export const createAccount = (
 };
 
 export const getCreateAccountMutationOptions = <
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(options?: {
 	mutation?: UseMutationOptions<
@@ -540,13 +544,13 @@ export type CreateAccountMutationResult = NonNullable<
 	Awaited<ReturnType<typeof createAccount>>
 >;
 export type CreateAccountMutationBody = BodyType<CreateAccountDto>;
-export type CreateAccountMutationError = ErrorType<unknown>;
+export type CreateAccountMutationError = ErrorType<ErrorResponseDto>;
 
 /**
- * @summary Create an account for the user.
+ * @summary Create an account for the user
  */
 export const useCreateAccount = <
-	TError = ErrorType<unknown>,
+	TError = ErrorType<ErrorResponseDto>,
 	TContext = unknown,
 >(
 	options?: {
@@ -567,8 +571,8 @@ export const useCreateAccount = <
 	return useMutation(getCreateAccountMutationOptions(options), queryClient);
 };
 /**
- * Retrieves a list of all users registered in the system.
- * @summary Lists all registered users.
+ * Administrative endpoint to retrieve a list of every user in the system.
+ * @summary List all registered users
  */
 export const listAllUsers = (signal?: AbortSignal) => {
 	return orvalClient<User[]>({ url: `/users/all`, method: 'GET', signal });
@@ -662,7 +666,7 @@ export function useListAllUsers<
 	queryKey: DataTag<QueryKey, TData, TError>;
 };
 /**
- * @summary Lists all registered users.
+ * @summary List all registered users
  */
 
 export function useListAllUsers<
