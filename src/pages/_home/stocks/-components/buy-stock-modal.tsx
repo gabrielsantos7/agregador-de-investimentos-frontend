@@ -1,4 +1,5 @@
 import { useForm } from '@tanstack/react-form';
+import { useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -27,8 +28,11 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import type { ApiError } from '@/http/errors/api-error';
+import { getGetOwnedStocksQueryKey } from '@/http/requests/stocks';
 import { useBuyStock } from '@/http/requests/trades';
+import { getListAllAccountsQueryKey } from '@/http/requests/users';
 import type { AccountResponseDto } from '@/http/schemas';
+import { useAuth } from '@/integrations/tanstack-store/stores/auth.store';
 import { type BuyStockSchema, buyStockSchema } from '../-schemas/buy-stock';
 
 const formDefaultValues: BuyStockSchema = {
@@ -37,16 +41,25 @@ const formDefaultValues: BuyStockSchema = {
 	accountId: '',
 };
 
-export function BuyStockModal({
-	accounts,
-}: {
+interface BuyStockModalProps {
 	accounts: AccountResponseDto[];
-}) {
+}
+
+export function BuyStockModal({ accounts }: BuyStockModalProps) {
+	const queryClient = useQueryClient();
+	const { user } = useAuth();
+
 	const { mutate: buyStock, isPending: isBuyingStock } = useBuyStock<ApiError>({
 		mutation: {
 			onSuccess: () => {
 				toast.success('Stock bought successfully');
-				// TODO: invalidate stocks query
+				form.reset();
+				queryClient.invalidateQueries({
+					queryKey: getGetOwnedStocksQueryKey(),
+				});
+				queryClient.invalidateQueries({
+					queryKey: getListAllAccountsQueryKey(user!.userId),
+				});
 			},
 			onError: error => {
 				const description = error.message || 'An unexpected error occurred';

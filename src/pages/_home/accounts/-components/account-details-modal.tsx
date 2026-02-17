@@ -73,7 +73,7 @@ export function AccountDetailsModal({
                   </p>
                 </div> */}
 						<div className="bg-secondary/50 rounded-lg p-4">
-							<p className="text-sm text-muted-foreground">Positions</p>
+							<p className="text-sm text-muted-foreground">Stocks</p>
 							<p className="text-xl font-bold text-foreground">
 								{account.stocks?.length || 0}
 							</p>
