@@ -8,207 +8,207 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './pages/__root'
-import { Route as HomeLayoutRouteImport } from './pages/_home/layout'
-import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
-import { Route as HomeIndexRouteImport } from './pages/_home/index'
-import { Route as HomeStocksIndexRouteImport } from './pages/_home/stocks/index'
-import { Route as HomeDashboardIndexRouteImport } from './pages/_home/dashboard/index'
-import { Route as HomeAccountsIndexRouteImport } from './pages/_home/accounts/index'
-import { Route as AuthRegisterIndexRouteImport } from './pages/_auth/register/index'
-import { Route as AuthLoginIndexRouteImport } from './pages/_auth/login/index'
+import { Route as rootRouteImport } from './pages/__root';
+import { Route as HomeLayoutRouteImport } from './pages/_home/layout';
+import { Route as AuthLayoutRouteImport } from './pages/_auth/layout';
+import { Route as HomeIndexRouteImport } from './pages/_home/index';
+import { Route as HomeStocksIndexRouteImport } from './pages/_home/stocks/index';
+import { Route as HomeDashboardIndexRouteImport } from './pages/_home/dashboard/index';
+import { Route as HomeAccountsIndexRouteImport } from './pages/_home/accounts/index';
+import { Route as AuthRegisterIndexRouteImport } from './pages/_auth/register/index';
+import { Route as AuthLoginIndexRouteImport } from './pages/_auth/login/index';
 
 const HomeLayoutRoute = HomeLayoutRouteImport.update({
-  id: '/_home',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: '/_home',
+	getParentRoute: () => rootRouteImport,
+} as any);
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: '/_auth',
+	getParentRoute: () => rootRouteImport,
+} as any);
 const HomeIndexRoute = HomeIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => HomeLayoutRoute,
-} as any)
+	id: '/',
+	path: '/',
+	getParentRoute: () => HomeLayoutRoute,
+} as any);
 const HomeStocksIndexRoute = HomeStocksIndexRouteImport.update({
-  id: '/stocks/',
-  path: '/stocks/',
-  getParentRoute: () => HomeLayoutRoute,
-} as any)
+	id: '/stocks/',
+	path: '/stocks/',
+	getParentRoute: () => HomeLayoutRoute,
+} as any);
 const HomeDashboardIndexRoute = HomeDashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => HomeLayoutRoute,
-} as any)
+	id: '/dashboard/',
+	path: '/dashboard/',
+	getParentRoute: () => HomeLayoutRoute,
+} as any);
 const HomeAccountsIndexRoute = HomeAccountsIndexRouteImport.update({
-  id: '/accounts/',
-  path: '/accounts/',
-  getParentRoute: () => HomeLayoutRoute,
-} as any)
+	id: '/accounts/',
+	path: '/accounts/',
+	getParentRoute: () => HomeLayoutRoute,
+} as any);
 const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
-  id: '/register/',
-  path: '/register/',
-  getParentRoute: () => AuthLayoutRoute,
-} as any)
+	id: '/register/',
+	path: '/register/',
+	getParentRoute: () => AuthLayoutRoute,
+} as any);
 const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
-  getParentRoute: () => AuthLayoutRoute,
-} as any)
+	id: '/login/',
+	path: '/login/',
+	getParentRoute: () => AuthLayoutRoute,
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof HomeIndexRoute
-  '/login/': typeof AuthLoginIndexRoute
-  '/register/': typeof AuthRegisterIndexRoute
-  '/accounts/': typeof HomeAccountsIndexRoute
-  '/dashboard/': typeof HomeDashboardIndexRoute
-  '/stocks/': typeof HomeStocksIndexRoute
+	'/': typeof HomeIndexRoute;
+	'/login/': typeof AuthLoginIndexRoute;
+	'/register/': typeof AuthRegisterIndexRoute;
+	'/accounts/': typeof HomeAccountsIndexRoute;
+	'/dashboard/': typeof HomeDashboardIndexRoute;
+	'/stocks/': typeof HomeStocksIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof HomeIndexRoute
-  '/login': typeof AuthLoginIndexRoute
-  '/register': typeof AuthRegisterIndexRoute
-  '/accounts': typeof HomeAccountsIndexRoute
-  '/dashboard': typeof HomeDashboardIndexRoute
-  '/stocks': typeof HomeStocksIndexRoute
+	'/': typeof HomeIndexRoute;
+	'/login': typeof AuthLoginIndexRoute;
+	'/register': typeof AuthRegisterIndexRoute;
+	'/accounts': typeof HomeAccountsIndexRoute;
+	'/dashboard': typeof HomeDashboardIndexRoute;
+	'/stocks': typeof HomeStocksIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/_auth': typeof AuthLayoutRouteWithChildren
-  '/_home': typeof HomeLayoutRouteWithChildren
-  '/_home/': typeof HomeIndexRoute
-  '/_auth/login/': typeof AuthLoginIndexRoute
-  '/_auth/register/': typeof AuthRegisterIndexRoute
-  '/_home/accounts/': typeof HomeAccountsIndexRoute
-  '/_home/dashboard/': typeof HomeDashboardIndexRoute
-  '/_home/stocks/': typeof HomeStocksIndexRoute
+	__root__: typeof rootRouteImport;
+	'/_auth': typeof AuthLayoutRouteWithChildren;
+	'/_home': typeof HomeLayoutRouteWithChildren;
+	'/_home/': typeof HomeIndexRoute;
+	'/_auth/login/': typeof AuthLoginIndexRoute;
+	'/_auth/register/': typeof AuthRegisterIndexRoute;
+	'/_home/accounts/': typeof HomeAccountsIndexRoute;
+	'/_home/dashboard/': typeof HomeDashboardIndexRoute;
+	'/_home/stocks/': typeof HomeStocksIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/login/'
-    | '/register/'
-    | '/accounts/'
-    | '/dashboard/'
-    | '/stocks/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/accounts' | '/dashboard' | '/stocks'
-  id:
-    | '__root__'
-    | '/_auth'
-    | '/_home'
-    | '/_home/'
-    | '/_auth/login/'
-    | '/_auth/register/'
-    | '/_home/accounts/'
-    | '/_home/dashboard/'
-    | '/_home/stocks/'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths:
+		| '/'
+		| '/login/'
+		| '/register/'
+		| '/accounts/'
+		| '/dashboard/'
+		| '/stocks/';
+	fileRoutesByTo: FileRoutesByTo;
+	to: '/' | '/login' | '/register' | '/accounts' | '/dashboard' | '/stocks';
+	id:
+		| '__root__'
+		| '/_auth'
+		| '/_home'
+		| '/_home/'
+		| '/_auth/login/'
+		| '/_auth/register/'
+		| '/_home/accounts/'
+		| '/_home/dashboard/'
+		| '/_home/stocks/';
+	fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
-  HomeLayoutRoute: typeof HomeLayoutRouteWithChildren
+	AuthLayoutRoute: typeof AuthLayoutRouteWithChildren;
+	HomeLayoutRoute: typeof HomeLayoutRouteWithChildren;
 }
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_home': {
-      id: '/_home'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof HomeLayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthLayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_home/': {
-      id: '/_home/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof HomeIndexRouteImport
-      parentRoute: typeof HomeLayoutRoute
-    }
-    '/_home/stocks/': {
-      id: '/_home/stocks/'
-      path: '/stocks'
-      fullPath: '/stocks/'
-      preLoaderRoute: typeof HomeStocksIndexRouteImport
-      parentRoute: typeof HomeLayoutRoute
-    }
-    '/_home/dashboard/': {
-      id: '/_home/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof HomeDashboardIndexRouteImport
-      parentRoute: typeof HomeLayoutRoute
-    }
-    '/_home/accounts/': {
-      id: '/_home/accounts/'
-      path: '/accounts'
-      fullPath: '/accounts/'
-      preLoaderRoute: typeof HomeAccountsIndexRouteImport
-      parentRoute: typeof HomeLayoutRoute
-    }
-    '/_auth/register/': {
-      id: '/_auth/register/'
-      path: '/register'
-      fullPath: '/register/'
-      preLoaderRoute: typeof AuthRegisterIndexRouteImport
-      parentRoute: typeof AuthLayoutRoute
-    }
-    '/_auth/login/': {
-      id: '/_auth/login/'
-      path: '/login'
-      fullPath: '/login/'
-      preLoaderRoute: typeof AuthLoginIndexRouteImport
-      parentRoute: typeof AuthLayoutRoute
-    }
-  }
+	interface FileRoutesByPath {
+		'/_home': {
+			id: '/_home';
+			path: '';
+			fullPath: '/';
+			preLoaderRoute: typeof HomeLayoutRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		'/_auth': {
+			id: '/_auth';
+			path: '';
+			fullPath: '/';
+			preLoaderRoute: typeof AuthLayoutRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		'/_home/': {
+			id: '/_home/';
+			path: '/';
+			fullPath: '/';
+			preLoaderRoute: typeof HomeIndexRouteImport;
+			parentRoute: typeof HomeLayoutRoute;
+		};
+		'/_home/stocks/': {
+			id: '/_home/stocks/';
+			path: '/stocks';
+			fullPath: '/stocks/';
+			preLoaderRoute: typeof HomeStocksIndexRouteImport;
+			parentRoute: typeof HomeLayoutRoute;
+		};
+		'/_home/dashboard/': {
+			id: '/_home/dashboard/';
+			path: '/dashboard';
+			fullPath: '/dashboard/';
+			preLoaderRoute: typeof HomeDashboardIndexRouteImport;
+			parentRoute: typeof HomeLayoutRoute;
+		};
+		'/_home/accounts/': {
+			id: '/_home/accounts/';
+			path: '/accounts';
+			fullPath: '/accounts/';
+			preLoaderRoute: typeof HomeAccountsIndexRouteImport;
+			parentRoute: typeof HomeLayoutRoute;
+		};
+		'/_auth/register/': {
+			id: '/_auth/register/';
+			path: '/register';
+			fullPath: '/register/';
+			preLoaderRoute: typeof AuthRegisterIndexRouteImport;
+			parentRoute: typeof AuthLayoutRoute;
+		};
+		'/_auth/login/': {
+			id: '/_auth/login/';
+			path: '/login';
+			fullPath: '/login/';
+			preLoaderRoute: typeof AuthLoginIndexRouteImport;
+			parentRoute: typeof AuthLayoutRoute;
+		};
+	}
 }
 
 interface AuthLayoutRouteChildren {
-  AuthLoginIndexRoute: typeof AuthLoginIndexRoute
-  AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
+	AuthLoginIndexRoute: typeof AuthLoginIndexRoute;
+	AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute;
 }
 
 const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
-  AuthLoginIndexRoute: AuthLoginIndexRoute,
-  AuthRegisterIndexRoute: AuthRegisterIndexRoute,
-}
+	AuthLoginIndexRoute: AuthLoginIndexRoute,
+	AuthRegisterIndexRoute: AuthRegisterIndexRoute,
+};
 
 const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
-  AuthLayoutRouteChildren,
-)
+	AuthLayoutRouteChildren
+);
 
 interface HomeLayoutRouteChildren {
-  HomeIndexRoute: typeof HomeIndexRoute
-  HomeAccountsIndexRoute: typeof HomeAccountsIndexRoute
-  HomeDashboardIndexRoute: typeof HomeDashboardIndexRoute
-  HomeStocksIndexRoute: typeof HomeStocksIndexRoute
+	HomeIndexRoute: typeof HomeIndexRoute;
+	HomeAccountsIndexRoute: typeof HomeAccountsIndexRoute;
+	HomeDashboardIndexRoute: typeof HomeDashboardIndexRoute;
+	HomeStocksIndexRoute: typeof HomeStocksIndexRoute;
 }
 
 const HomeLayoutRouteChildren: HomeLayoutRouteChildren = {
-  HomeIndexRoute: HomeIndexRoute,
-  HomeAccountsIndexRoute: HomeAccountsIndexRoute,
-  HomeDashboardIndexRoute: HomeDashboardIndexRoute,
-  HomeStocksIndexRoute: HomeStocksIndexRoute,
-}
+	HomeIndexRoute: HomeIndexRoute,
+	HomeAccountsIndexRoute: HomeAccountsIndexRoute,
+	HomeDashboardIndexRoute: HomeDashboardIndexRoute,
+	HomeStocksIndexRoute: HomeStocksIndexRoute,
+};
 
 const HomeLayoutRouteWithChildren = HomeLayoutRoute._addFileChildren(
-  HomeLayoutRouteChildren,
-)
+	HomeLayoutRouteChildren
+);
 
 const rootRouteChildren: RootRouteChildren = {
-  AuthLayoutRoute: AuthLayoutRouteWithChildren,
-  HomeLayoutRoute: HomeLayoutRouteWithChildren,
-}
+	AuthLayoutRoute: AuthLayoutRouteWithChildren,
+	HomeLayoutRoute: HomeLayoutRouteWithChildren,
+};
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>();
