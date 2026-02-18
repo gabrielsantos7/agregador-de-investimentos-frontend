@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import { LoaderCircle } from 'lucide-react';
+
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,12 +21,16 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import type { ApiError } from '@/http/errors/api-error';
-import { useCreateAccount } from '@/http/requests/users';
+import {
+	getListAllAccountsQueryKey,
+	useCreateAccount,
+} from '@/http/requests/users';
 import { useAuth } from '@/integrations/tanstack-store/stores/auth.store';
 import {
 	type CreateAccountSchema,
 	createAccountSchema,
 } from '../-schemas/create-account.schema';
+import { useQueryClient } from '@tanstack/react-query';
 
 const formDefaultValues: CreateAccountSchema = {
 	description: '',
@@ -35,13 +40,17 @@ const formDefaultValues: CreateAccountSchema = {
 
 export function CreateAccountModal() {
 	const { user } = useAuth();
+	const queryClient = useQueryClient();
 
 	const { mutate: createAccount, isPending: isCreatingAccount } =
 		useCreateAccount<ApiError>({
 			mutation: {
 				onSuccess: () => {
 					toast.success('Account created successfully');
-					// TODO: invalidate accounts query
+					queryClient.invalidateQueries({
+						queryKey: getListAllAccountsQueryKey(user!.userId),
+					});
+					form.reset();
 				},
 				onError: error => {
 					const description = error.message || 'An unexpected error occurred';
