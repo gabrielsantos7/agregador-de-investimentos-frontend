@@ -46,9 +46,6 @@ function Stocks() {
 					</div>
 				</div>
 				<Card>
-					<CardHeader>
-						<CardTitle>Your stocks</CardTitle>
-					</CardHeader>
 					<CardContent>
 						<StocksTable data={stocks} />
 					</CardContent>
