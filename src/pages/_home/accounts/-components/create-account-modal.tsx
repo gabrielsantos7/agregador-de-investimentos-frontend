@@ -178,7 +178,7 @@ export function CreateAccountModal() {
 							type="submit"
 							variant="primary"
 							form="create-account-form"
-							className="w-34"
+							className="w-full sm:w-34 font-medium"
 							disabled={isCreatingAccount}
 						>
 							{isCreatingAccount ? (

@@ -12,9 +12,9 @@ export function formatCurrency(
 	options: FormatCurrencyOptions = {}
 ): string {
 	const {
-		locale,
+		locale = 'en-US',
 		currency = 'USD',
-		minimumFractionDigits,
+		minimumFractionDigits = 2,
 		maximumFractionDigits,
 	} = options;
 

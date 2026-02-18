@@ -148,7 +148,7 @@ export function CreateStockModal() {
 							type="submit"
 							variant="primary"
 							form="create-stock-form"
-							className="w-34"
+							className="w-full sm:w-34 font-medium"
 							disabled={isCreatingStock}
 						>
 							{isCreatingStock ? (

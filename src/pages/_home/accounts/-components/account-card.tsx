@@ -1,6 +1,7 @@
 import { Decimal } from 'decimal.js';
 import { Eye, MoreVertical, Wallet } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import CountUp from '@/components/CountUp';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,15 +14,13 @@ import {
 import type { AccountResponseDto } from '@/http/schemas';
 import { formatCurrency } from '@/utils/formatters';
 import { AccountDetailsModal } from './account-details-modal';
+import { StockLogo } from '@/components/shared/stock-logo';
 
 export function AccountCard({ account }: { account: AccountResponseDto }) {
 	const totalValue = useMemo(
 		() =>
 			account.stocks?.reduce((sum, stock) => {
-				const stockValue = new Decimal(stock.quantity).mul(
-					new Decimal(stock.price)
-				);
-				return sum.add(stockValue);
+				return sum.plus(new Decimal(stock.total));
 			}, new Decimal(0)),
 		[account.stocks]
 	);
@@ -91,11 +90,25 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 			<CardContent className="space-y-4">
 				<div className="flex items-end justify-between">
 					<div>
-						<p className="text-3xl font-bold text-foreground">
-							{totalValue
-								? formatCurrency(totalValue)
-								: formatCurrency(new Decimal(0))}
-						</p>
+						{totalValue && (
+							<p className="text-3xl font-bold text-foreground">
+								{totalValue?.equals(new Decimal(0)) ? (
+									formatCurrency(totalValue)
+								) : (
+									<>
+										$
+										<CountUp
+											from={0}
+											to={Number(totalValue.toNumber().toFixed(2))}
+											direction="up"
+											duration={0.1}
+											separator=","
+											className="count-up-text"
+										/>
+									</>
+								)}
+							</p>
+						)}
 						{/* <div className="flex items-center gap-2 mt-1">
 							{account.change >= 0 ? (
 								<TrendingUp className="size-4 text-success" />
@@ -125,13 +138,18 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 						</p>
 						<div className="flex flex-wrap gap-2">
 							{account.stocks.slice(0, 4).map(stock => (
-								<Badge
+								// <Badge
+								// 	key={stock.stockId}
+								// 	variant="secondary"
+								// 	className="bg-secondary text-secondary-foreground"
+								// >
+								// 	{stock.stockId}
+								// </Badge>
+								<StockLogo
 									key={stock.stockId}
-									variant="secondary"
-									className="bg-secondary text-secondary-foreground"
-								>
-									{stock.stockId}
-								</Badge>
+									src={stock.logoUrl}
+									stockId={stock.stockId}
+								/>
 							))}
 							{account.stocks.length > 4 && (
 								<Badge

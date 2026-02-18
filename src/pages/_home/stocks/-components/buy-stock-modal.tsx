@@ -197,7 +197,7 @@ export function BuyStockModal({ accounts }: BuyStockModalProps) {
 							type="submit"
 							variant="primary"
 							form="buy-stock-form"
-							className="w-34"
+							className="wfull sm:w-34 font-medium"
 							disabled={isBuyingStock}
 						>
 							{isBuyingStock ? (
