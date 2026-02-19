@@ -31,4 +31,3 @@ export * from './user';
 export * from './userDto';
 export * from './userDtoRole';
 export * from './userRole';
-export * from './userStockSummaryDto';
