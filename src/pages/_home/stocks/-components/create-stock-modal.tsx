@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -36,6 +37,7 @@ const defaultValues: CreateStockSchema = {
 };
 
 export function CreateStockModal() {
+	const [open, setOpen] = useState(false);
 	const queryClient = useQueryClient();
 
 	const { mutate: createStock, isPending: isCreatingStock } =
@@ -44,6 +46,7 @@ export function CreateStockModal() {
 				onSuccess: () => {
 					toast.success('Stock created successfully');
 					form.reset();
+					setOpen(false);
 					queryClient.invalidateQueries({
 						queryKey: getGetOwnedStocksQueryKey(),
 					});
@@ -71,8 +74,16 @@ export function CreateStockModal() {
 		},
 	});
 
+	const handleOpenChange = (isOpen: boolean) => {
+		setOpen(isOpen);
+
+		if (!isOpen) {
+			form.reset();
+		}
+	};
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<form
 				id="create-stock-form"
 				onSubmit={event => {

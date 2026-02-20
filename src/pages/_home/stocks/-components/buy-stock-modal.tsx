@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -46,20 +47,25 @@ interface BuyStockModalProps {
 }
 
 export function BuyStockModal({ accounts }: BuyStockModalProps) {
+	const [open, setOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const { user } = useAuth();
+	const userId = user?.userId;
 
 	const { mutate: buyStock, isPending: isBuyingStock } = useBuyStock<ApiError>({
 		mutation: {
 			onSuccess: () => {
 				toast.success('Stock bought successfully');
 				form.reset();
+				setOpen(false);
 				queryClient.invalidateQueries({
 					queryKey: getGetOwnedStocksQueryKey(),
 				});
-				queryClient.invalidateQueries({
-					queryKey: getListAllAccountsQueryKey(user!.userId),
-				});
+				if (userId) {
+					queryClient.invalidateQueries({
+						queryKey: getListAllAccountsQueryKey(userId),
+					});
+				}
 			},
 			onError: error => {
 				const description = error.message || 'An unexpected error occurred';
@@ -74,7 +80,6 @@ export function BuyStockModal({ accounts }: BuyStockModalProps) {
 			onSubmit: buyStockSchema,
 		},
 		onSubmit: ({ value }) => {
-			console.log('Buying stock with value:', value);
 			buyStock({
 				data: {
 					...value,
@@ -83,8 +88,16 @@ export function BuyStockModal({ accounts }: BuyStockModalProps) {
 		},
 	});
 
+	const handleOpenChange = (isOpen: boolean) => {
+		setOpen(isOpen);
+
+		if (!isOpen) {
+			form.reset();
+		}
+	};
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<form
 				id="buy-stock-form"
 				onSubmit={e => {

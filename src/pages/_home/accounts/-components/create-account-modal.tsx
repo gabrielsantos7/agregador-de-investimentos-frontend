@@ -1,5 +1,7 @@
 import { useForm } from '@tanstack/react-form';
+import { useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -30,7 +32,6 @@ import {
 	type CreateAccountSchema,
 	createAccountSchema,
 } from '../-schemas/create-account.schema';
-import { useQueryClient } from '@tanstack/react-query';
 
 const formDefaultValues: CreateAccountSchema = {
 	description: '',
@@ -39,18 +40,23 @@ const formDefaultValues: CreateAccountSchema = {
 };
 
 export function CreateAccountModal() {
+	const [open, setOpen] = useState(false);
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
+	const userId = user?.userId;
 
 	const { mutate: createAccount, isPending: isCreatingAccount } =
 		useCreateAccount<ApiError>({
 			mutation: {
 				onSuccess: () => {
 					toast.success('Account created successfully');
-					queryClient.invalidateQueries({
-						queryKey: getListAllAccountsQueryKey(user!.userId),
-					});
+					if (userId) {
+						queryClient.invalidateQueries({
+							queryKey: getListAllAccountsQueryKey(userId),
+						});
+					}
 					form.reset();
+					setOpen(false);
 				},
 				onError: error => {
 					const description = error.message || 'An unexpected error occurred';
@@ -65,9 +71,15 @@ export function CreateAccountModal() {
 			onSubmit: createAccountSchema,
 		},
 		onSubmit: ({ value }) => {
-			console.log('Creating account with value:', value);
+			if (!userId) {
+				toast.error('Error creating account', {
+					description: 'You must be logged in to create an account',
+				});
+				return;
+			}
+
 			createAccount({
-				userId: user!.userId,
+				userId,
 				data: {
 					...value,
 					number: Number(value.number),
@@ -76,8 +88,16 @@ export function CreateAccountModal() {
 		},
 	});
 
+	const handleOpenChange = (isOpen: boolean) => {
+		setOpen(isOpen);
+
+		if (!isOpen) {
+			form.reset();
+		}
+	};
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<form
 				id="create-account-form"
 				onSubmit={e => {

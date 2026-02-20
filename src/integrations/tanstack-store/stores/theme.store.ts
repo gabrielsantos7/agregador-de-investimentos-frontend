@@ -26,7 +26,6 @@ export const toggleTheme = () => {
 
 // Manual persistence
 themeStore.subscribe(() => {
-	console.log('Persisting theme preference:', themeStore.state);
 	localStorage.setItem(STORAGE_KEY, themeStore.state.theme);
 });
 
