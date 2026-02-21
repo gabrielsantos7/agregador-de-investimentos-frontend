@@ -7,7 +7,7 @@ import { routeTree } from './routeTree.gen';
 
 const rqContext = TanstackQuery.getContext();
 
-const router = createRouter({
+export const router = createRouter({
 	routeTree,
 	context: { ...rqContext },
 	defaultNotFoundComponent: NotFound,

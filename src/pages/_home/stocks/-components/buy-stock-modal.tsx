@@ -34,7 +34,10 @@ import { useBuyStock } from '@/http/requests/trades';
 import { getListAllAccountsQueryKey } from '@/http/requests/users';
 import type { AccountResponseDto } from '@/http/schemas';
 import { useAuth } from '@/integrations/tanstack-store/stores/auth.store';
-import { type BuyStockSchema, buyStockSchema } from '../-schemas/buy-stock';
+import {
+	type BuyStockSchema,
+	buyStockSchema,
+} from '../-schemas/buy-stock.schema';
 
 const formDefaultValues: BuyStockSchema = {
 	stockId: '',
@@ -80,9 +83,10 @@ export function BuyStockModal({ accounts }: BuyStockModalProps) {
 			onSubmit: buyStockSchema,
 		},
 		onSubmit: ({ value }) => {
+			const parsed = buyStockSchema.safeParse(value).data as BuyStockSchema;
 			buyStock({
 				data: {
-					...value,
+					...parsed,
 				},
 			});
 		},

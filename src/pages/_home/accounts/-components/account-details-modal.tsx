@@ -120,19 +120,19 @@ export function AccountDetailsModal({
 													key={stock.stockId}
 													className="border-b border-border/50 hover:bg-secondary/30"
 												>
-													<TableCell className="flex items-center gap-3">
+													<TableCell className="flex items-center gap-3 max-w-xs">
 														<StockLogo
 															stockId={stock.stockId}
 															src={stock.logoUrl}
 															alt={`Logo for ${stock.stockId}`}
 															size="lg"
 														/>
-														<div>
-															<p className="text-foreground font-medium">
+														<div className="min-w-0">
+															<p className="text-foreground font-medium truncate">
 																{stock.stockId}
-																<p className="text-muted-foreground text-sm">
-																	{stock.longName}
-																</p>
+															</p>
+															<p className="text-muted-foreground text-sm truncate">
+																{stock.longName}
 															</p>
 														</div>
 													</TableCell>

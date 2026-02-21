@@ -1,5 +1,6 @@
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 import { StatusCodes } from 'http-status-codes';
+import { router } from '@/app';
 import {
 	AUTH_TOKEN_KEY,
 	authStore,
@@ -30,6 +31,7 @@ axiosInstance.interceptors.response.use(
 			// !DO_NOT_401_REDIRECT_PATHS.includes(window.location.pathname)
 		) {
 			authStore.setState({ token: null, user: null });
+			router.navigate({ to: '/login' });
 		}
 		return Promise.reject(error);
 	}
