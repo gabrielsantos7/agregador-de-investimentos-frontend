@@ -8,5 +8,9 @@
 
 export interface Stock {
 	stockId?: string;
+	name?: string;
+	longName?: string;
+	sector?: string;
+	logoUrl?: string;
 	description?: string;
 }
