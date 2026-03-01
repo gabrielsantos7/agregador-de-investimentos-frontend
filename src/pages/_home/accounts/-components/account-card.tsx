@@ -1,7 +1,14 @@
 import { Decimal } from 'decimal.js';
-import { Eye, MoreVertical, Wallet } from 'lucide-react';
+import {
+	DollarSign,
+	Eye,
+	MoreVertical,
+	ShoppingCart,
+	Wallet,
+} from 'lucide-react';
 import { useMemo, useState } from 'react';
 import CountUp from '@/components/CountUp';
+import { StockLogo } from '@/components/shared/stock-logo';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,8 +20,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { AccountResponseDto } from '@/http/schemas';
 import { formatCurrency } from '@/utils/formatters';
+import { BuyStockModal } from '../../stocks/-components/buy-stock-modal';
 import { AccountDetailsModal } from './account-details-modal';
-import { StockLogo } from '@/components/shared/stock-logo';
+import { SellStockModal } from './sell-stock-modal';
 
 export function AccountCard({ account }: { account: AccountResponseDto }) {
 	const totalValue = useMemo(
@@ -26,13 +34,16 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 	);
 
 	const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+	const [isBuyOpen, setIsBuyOpen] = useState(false);
+	const hasStocks = (account.stocks?.length ?? 0) > 0;
+	const [isSellOpen, setIsSellOpen] = useState(false);
 
 	return (
 		<Card
 			key={account.accountId}
 			className="bg-card border-border hover:border-emerald-500 duration-300 transition-colors group"
 		>
-			<CardHeader className="flex flex-row items-start justify-between pb-2">
+			<CardHeader className="flex flex-row items-center justify-between pb-2">
 				<div className="flex items-center gap-3">
 					<div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-emerald-500/10">
 						<Wallet className="size-5 text-primary group-hover:text-emerald-500" />
@@ -57,6 +68,25 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="bg-popover border-border">
+						<DropdownMenuItem
+							onClick={() => {
+								setIsBuyOpen(true);
+							}}
+							className="cursor-pointer"
+						>
+							<ShoppingCart className="mr-2 size-4" />
+							Buy stock
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => {
+								setIsSellOpen(true);
+							}}
+							disabled={!hasStocks}
+							className="cursor-pointer"
+						>
+							<DollarSign className="mr-2 size-4" />
+							Sell stock
+						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={() => {
 								setIsDetailsOpen(true);
@@ -85,6 +115,17 @@ export function AccountCard({ account }: { account: AccountResponseDto }) {
 					account={account}
 					open={isDetailsOpen}
 					onOpenChange={setIsDetailsOpen}
+				/>
+				<BuyStockModal
+					accounts={[account]}
+					defaultAccountId={account.accountId}
+					open={isBuyOpen}
+					onOpenChange={setIsBuyOpen}
+				/>
+				<SellStockModal
+					account={account}
+					open={isSellOpen}
+					onOpenChange={setIsSellOpen}
 				/>
 			</CardHeader>
 			<CardContent className="space-y-4">
