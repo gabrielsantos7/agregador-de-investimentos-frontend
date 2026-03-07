@@ -1,8 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +12,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from '@/components/ui/dialog';
 import {
 	Field,
@@ -29,16 +27,21 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import type { ApiError } from '@/http/errors/api-error';
 import { getGetOwnedStocksQueryKey } from '@/http/requests/stocks';
-import { useBuyStock } from '@/http/requests/trades';
+import { useSellStock } from '@/http/requests/trades';
 import { getListAllAccountsQueryKey } from '@/http/requests/users';
 import type { AccountResponseDto } from '@/http/schemas';
 import { useAuth } from '@/integrations/tanstack-store/stores/auth.store';
 import {
 	type BuyStockSchema,
 	buyStockSchema,
-} from '../-schemas/buy-stock.schema';
+} from '../../stocks/-schemas/buy-stock.schema';
+
+type SellStockModalProps = {
+	account: AccountResponseDto;
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+};
 
 const formDefaultValues: BuyStockSchema = {
 	stockId: '',
@@ -46,34 +49,23 @@ const formDefaultValues: BuyStockSchema = {
 	accountId: '',
 };
 
-interface BuyStockModalProps {
-	accounts: AccountResponseDto[];
-	defaultAccountId?: string;
-	open?: boolean;
-	onOpenChange?: (open: boolean) => void;
-	trigger?: ReactNode;
-}
-
-export function BuyStockModal({
-	accounts,
-	defaultAccountId,
-	open: controlledOpen,
+export function SellStockModal({
+	account,
+	open,
 	onOpenChange,
-	trigger,
-}: BuyStockModalProps) {
-	const [internalOpen, setInternalOpen] = useState(false);
-	const isControlled = controlledOpen !== undefined;
-	const open = isControlled ? controlledOpen : internalOpen;
+}: SellStockModalProps) {
+	const availableStocks = useMemo(() => account.stocks ?? [], [account.stocks]);
+
 	const queryClient = useQueryClient();
 	const { user } = useAuth();
 	const userId = user?.userId;
 
-	const { mutate: buyStock, isPending: isBuyingStock } = useBuyStock<ApiError>({
+	const { mutate: sellStock, isPending: isSellingStock } = useSellStock({
 		mutation: {
 			onSuccess: () => {
-				toast.success('Stock bought successfully');
+				toast.success('Stock sold successfully');
 				form.reset();
-				handleOpenChange(false);
+				onOpenChange(false);
 
 				queryClient.invalidateQueries({
 					queryKey: getGetOwnedStocksQueryKey(),
@@ -87,7 +79,7 @@ export function BuyStockModal({
 			},
 			onError: error => {
 				const description = error.message || 'An unexpected error occurred';
-				toast.error('Error buying stock', { description });
+				toast.error('Error selling stock', { description });
 			},
 		},
 	});
@@ -99,79 +91,83 @@ export function BuyStockModal({
 		},
 		onSubmit: ({ value }) => {
 			const parsed = buyStockSchema.safeParse(value).data as BuyStockSchema;
-			buyStock({
+
+			const selectedStock = availableStocks.find(
+				stock => stock.stockId === parsed.stockId
+			);
+
+			if (!selectedStock) {
+				toast.error('Stock not found in this account');
+				return;
+			}
+
+			if (parsed.quantity > selectedStock.quantity) {
+				toast.error('Quantity is greater than available shares');
+				return;
+			}
+
+			sellStock({
 				data: {
-					...parsed,
+					stockId: parsed.stockId,
+					accountId: parsed.accountId,
+					quantity: parsed.quantity,
 				},
 			});
 		},
 	});
 
-	const handleOpenChange = (isOpen: boolean) => {
-		if (!isControlled) {
-			setInternalOpen(isOpen);
-		}
-
-		onOpenChange?.(isOpen);
-
-		if (!isOpen) {
-			form.reset();
-		}
-	};
-
 	useEffect(() => {
-		if (open && defaultAccountId) {
-			form.setFieldValue('accountId', defaultAccountId);
+		if (open) {
+			form.setFieldValue('accountId', account.accountId);
 		}
-	}, [defaultAccountId, form, open]);
+	}, [account.accountId, form, open]);
 
 	return (
-		<Dialog open={open} onOpenChange={handleOpenChange}>
-			{trigger ? (
-				<DialogTrigger asChild>{trigger}</DialogTrigger>
-			) : !isControlled ? (
-				<DialogTrigger asChild>
-					<Button variant="primary">Buy stock</Button>
-				</DialogTrigger>
-			) : null}
+		<Dialog
+			open={open}
+			onOpenChange={isOpen => {
+				onOpenChange(isOpen);
+
+				if (!isOpen) {
+					form.reset();
+				}
+			}}
+		>
 			<DialogContent className="sm:max-w-sm">
 				<form
-					id="buy-stock-form"
+					id="sell-stock-form"
 					onSubmit={e => {
 						e.preventDefault();
 						form.handleSubmit();
 					}}
 				>
 					<DialogHeader>
-						<DialogTitle>Buy stock</DialogTitle>
+						<DialogTitle>Sell stock</DialogTitle>
 						<DialogDescription>
-							Buy a stock to add it to your portfolio.
+							Select one stock from this account and inform quantity.
 						</DialogDescription>
 					</DialogHeader>
 					<FieldGroup className="gap-4 mt-2">
-						<form.Field name="accountId">
+						<form.Field name="stockId">
 							{field => {
 								const isInvalid =
 									field.state.meta.isTouched &&
 									field.state.meta.errors.length > 0;
 								return (
 									<Field className="grid gap-2" data-invalid={isInvalid}>
-										<FieldLabel htmlFor={field.name}>Account</FieldLabel>
+										<FieldLabel htmlFor={field.name}>Stock</FieldLabel>
 										<Select
 											value={field.state.value}
 											onValueChange={field.handleChange}
-											disabled={isBuyingStock}
+											disabled={isSellingStock}
 										>
 											<SelectTrigger>
-												<SelectValue placeholder="Select an account" />
+												<SelectValue placeholder="Select a stock" />
 											</SelectTrigger>
 											<SelectContent>
-												{accounts.map((account: AccountResponseDto) => (
-													<SelectItem
-														key={account.accountId}
-														value={account.accountId}
-													>
-														{account.description}
+												{availableStocks.map(stock => (
+													<SelectItem key={stock.stockId} value={stock.stockId}>
+														{stock.stockId} ({stock.quantity})
 													</SelectItem>
 												))}
 											</SelectContent>
@@ -183,29 +179,7 @@ export function BuyStockModal({
 								);
 							}}
 						</form.Field>
-						<form.Field name="stockId">
-							{field => {
-								const isInvalid =
-									field.state.meta.isTouched &&
-									field.state.meta.errors.length > 0;
-								return (
-									<Field className="grid gap-2" data-invalid={isInvalid}>
-										<FieldLabel htmlFor={field.name}>Stock</FieldLabel>
-										<Input
-											id={field.name}
-											value={field.state.value}
-											onBlur={field.handleBlur}
-											onChange={e => field.handleChange(e.target.value)}
-											placeholder="AAPL"
-											disabled={isBuyingStock}
-										/>
-										{isInvalid && (
-											<FieldError errors={field.state.meta.errors} />
-										)}
-									</Field>
-								);
-							}}
-						</form.Field>
+
 						<form.Field name="quantity">
 							{field => {
 								const isInvalid =
@@ -222,8 +196,8 @@ export function BuyStockModal({
 											value={field.state.value}
 											onBlur={field.handleBlur}
 											onChange={e => field.handleChange(Number(e.target.value))}
-											placeholder="67"
-											disabled={isBuyingStock}
+											placeholder="100"
+											disabled={isSellingStock}
 										/>
 										{isInvalid && (
 											<FieldError errors={field.state.meta.errors} />
@@ -235,17 +209,17 @@ export function BuyStockModal({
 					</FieldGroup>
 					<DialogFooter className="mt-2">
 						<DialogClose asChild>
-							<Button variant="outline" disabled={isBuyingStock}>
+							<Button variant="outline" disabled={isSellingStock}>
 								Cancel
 							</Button>
 						</DialogClose>
 						<Button
 							type="submit"
 							variant="primary"
-							className="wfull sm:w-34 font-medium"
-							disabled={isBuyingStock}
+							className="w-full sm:w-34 font-medium"
+							disabled={isSellingStock}
 						>
-							{isBuyingStock ? (
+							{isSellingStock ? (
 								<LoaderCircle className="animate-spin size-6" strokeWidth={3} />
 							) : (
 								'Save changes'

@@ -38,7 +38,7 @@ export function AccountDetailsModal({
 		() =>
 			account.stocks?.reduce((sum, stock) => {
 				const stockValue = new Decimal(stock.quantity).mul(
-					new Decimal(stock.price)
+					new Decimal(stock.currentPrice)
 				);
 				return sum.add(stockValue);
 			}, new Decimal(0)),
@@ -47,7 +47,7 @@ export function AccountDetailsModal({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="bg-card border-border max-w-2xl!">
+			<DialogContent className="bg-card border-border max-w-2xl! max-h-[85vh] flex flex-col">
 				<DialogHeader>
 					<DialogTitle className="text-foreground flex items-center gap-3">
 						<div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -60,7 +60,7 @@ export function AccountDetailsModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className="space-y-4">
+				<div className="space-y-4 min-h-0 overflow-hidden">
 					<div className="grid grid-cols-2 gap-4">
 						<div className="bg-secondary/50 rounded-lg p-4">
 							<p className="text-sm text-muted-foreground">Total Value</p>
@@ -96,7 +96,7 @@ export function AccountDetailsModal({
 									No stocks in this account
 								</p>
 							) : (
-								<div className="overflow-hidden rounded-lg">
+								<div className="overflow-hidden rounded-lg max-h-[45vh] overflow-y-auto">
 									<Table className="w-full text-sm">
 										<TableHeader className="overflow-hidden">
 											<TableRow className="border-b border-border">
@@ -141,12 +141,12 @@ export function AccountDetailsModal({
 														{stock.quantity}
 													</TableCell>
 													<TableCell className="text-right text-foreground">
-														{formatCurrency(new Decimal(stock.price))}
+														{formatCurrency(new Decimal(stock.currentPrice))}
 													</TableCell>
 													<TableCell className="text-right text-foreground font-medium">
 														{formatCurrency(
 															new Decimal(stock.quantity).mul(
-																new Decimal(stock.price)
+																new Decimal(stock.currentPrice)
 															)
 														)}
 													</TableCell>

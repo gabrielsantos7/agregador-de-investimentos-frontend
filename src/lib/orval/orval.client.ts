@@ -5,6 +5,7 @@ import {
 	AUTH_TOKEN_KEY,
 	authStore,
 } from '@/integrations/tanstack-store/stores/auth.store';
+import { toast } from 'sonner';
 
 const axiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
@@ -25,13 +26,10 @@ axiosInstance.interceptors.request.use(config => {
 axiosInstance.interceptors.response.use(
 	response => response,
 	error => {
-		if (
-			error.status === StatusCodes.UNAUTHORIZED
-			// error.response?.status === 401 &&
-			// !DO_NOT_401_REDIRECT_PATHS.includes(window.location.pathname)
-		) {
+		if (error.status === StatusCodes.UNAUTHORIZED) {
 			authStore.setState({ token: null, user: null });
 			router.navigate({ to: '/login' });
+			toast.error('Session expired. Please log in again.');
 		}
 		return Promise.reject(error);
 	}

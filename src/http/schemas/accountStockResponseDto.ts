@@ -16,10 +16,20 @@ export interface AccountStockResponseDto {
 	name: string;
 	/** Full name of the company issuing the stock. */
 	longName: string;
+	/** Industry */
+	sector: string;
 	/** Total quantity of the stock in the portfolio. */
 	quantity: number;
-	/** Average price paid per unit of the stock. */
-	price: number;
+	/** Average purchase price (User cost) */
+	avgPrice: number;
+	/** Current market price (Brapi) */
+	currentPrice: number;
+	/** Percentage change on the day */
+	change: number;
+	/** Daily trading volume */
+	volume: number;
+	/** Total value at market price (Qty * CurrentPrice) */
+	marketValue: number;
 	/** Total amount invested in the stock (quantity x average price). */
 	total: number;
 	/** URL of the logo of the company issuing the stock. */
