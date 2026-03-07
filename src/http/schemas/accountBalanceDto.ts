@@ -11,9 +11,9 @@
  */
 export interface AccountBalanceDto {
 	/** Unique identifier of the account (UUID). */
-	accountId?: string;
+	accountId: string;
 	/** The sum of all assets in the account, multiplied by their current market price. */
-	totalBalance?: number;
+	totalBalance: number;
 	/** The exact moment the balance was calculated based on real-time data. */
-	updatedAt?: string;
+	updatedAt: string;
 }

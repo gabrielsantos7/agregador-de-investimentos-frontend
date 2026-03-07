@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/password-input';
-import type { ApiError } from '@/http/errors/api-error';
 import { useRegister } from '@/http/requests/authentication';
 import { setAuthData } from '@/integrations/tanstack-store/stores/auth.store';
 import { redirectSchema } from '@/schemas/redirect.schema';
@@ -28,6 +27,7 @@ import {
 	type RegisterSchema,
 	registerSchema,
 } from './-schemas/register.schema';
+import type { ErrorResponseDto } from '@/http/schemas';
 
 interface Feature {
 	id: number;
@@ -77,21 +77,22 @@ function Register() {
 	const navigate = useNavigate();
 	const { redirect = '/' } = Route.useSearch();
 
-	const { mutate: register, isPending: isRegistering } = useRegister<ApiError>({
-		mutation: {
-			onSuccess: ({ user, accessToken }) => {
-				toast.success('Success', {
-					description: 'Your account has been created.',
-				});
-				setAuthData(user, accessToken);
-				navigate({ to: redirect });
+	const { mutate: register, isPending: isRegistering } =
+		useRegister<ErrorResponseDto>({
+			mutation: {
+				onSuccess: ({ user, accessToken }) => {
+					toast.success('Success', {
+						description: 'Your account has been created.',
+					});
+					setAuthData(user, accessToken);
+					navigate({ to: redirect });
+				},
+				onError: error => {
+					const description = error.message || 'An unexpected error occurred';
+					toast.error('Registration failed', { description });
+				},
 			},
-			onError: error => {
-				const description = error.message || 'An unexpected error occurred';
-				toast.error('Registration failed', { description });
-			},
-		},
-	});
+		});
 
 	const form = useForm({
 		defaultValues: formDefaultValues,

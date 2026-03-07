@@ -29,11 +29,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import type { ApiError } from '@/http/errors/api-error';
 import { getGetOwnedStocksQueryKey } from '@/http/requests/stocks';
 import { useBuyStock } from '@/http/requests/trades';
 import { getListAllAccountsQueryKey } from '@/http/requests/users';
-import type { AccountResponseDto } from '@/http/schemas';
+import type { AccountResponseDto, ErrorResponseDto } from '@/http/schemas';
 import { useAuth } from '@/integrations/tanstack-store/stores/auth.store';
 import {
 	type BuyStockSchema,
@@ -68,29 +67,30 @@ export function BuyStockModal({
 	const { user } = useAuth();
 	const userId = user?.userId;
 
-	const { mutate: buyStock, isPending: isBuyingStock } = useBuyStock<ApiError>({
-		mutation: {
-			onSuccess: () => {
-				toast.success('Stock bought successfully');
-				form.reset();
-				handleOpenChange(false);
+	const { mutate: buyStock, isPending: isBuyingStock } =
+		useBuyStock<ErrorResponseDto>({
+			mutation: {
+				onSuccess: () => {
+					toast.success('Stock bought successfully');
+					form.reset();
+					handleOpenChange(false);
 
-				queryClient.invalidateQueries({
-					queryKey: getGetOwnedStocksQueryKey(),
-				});
-
-				if (userId) {
 					queryClient.invalidateQueries({
-						queryKey: getListAllAccountsQueryKey(userId),
+						queryKey: getGetOwnedStocksQueryKey(),
 					});
-				}
+
+					if (userId) {
+						queryClient.invalidateQueries({
+							queryKey: getListAllAccountsQueryKey(userId),
+						});
+					}
+				},
+				onError: error => {
+					const description = error.message || 'An unexpected error occurred';
+					toast.error('Error buying stock', { description });
+				},
 			},
-			onError: error => {
-				const description = error.message || 'An unexpected error occurred';
-				toast.error('Error buying stock', { description });
-			},
-		},
-	});
+		});
 
 	const form = useForm({
 		defaultValues: formDefaultValues,

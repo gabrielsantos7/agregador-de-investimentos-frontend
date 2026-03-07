@@ -22,7 +22,6 @@ import {
 	FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import type { ApiError } from '@/http/errors/api-error';
 import {
 	getListAllAccountsQueryKey,
 	useCreateAccount,
@@ -32,6 +31,7 @@ import {
 	type CreateAccountSchema,
 	createAccountSchema,
 } from '../-schemas/create-account.schema';
+import type { ErrorResponseDto } from '@/http/schemas';
 
 const formDefaultValues: CreateAccountSchema = {
 	description: '',
@@ -46,7 +46,7 @@ export function CreateAccountModal() {
 	const userId = user?.userId;
 
 	const { mutate: createAccount, isPending: isCreatingAccount } =
-		useCreateAccount<ApiError>({
+		useCreateAccount<ErrorResponseDto>({
 			mutation: {
 				onSuccess: () => {
 					toast.success('Account created successfully');

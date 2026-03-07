@@ -15,5 +15,5 @@ export interface AccountResponseDto {
 	accountId: string;
 	/** Friendly description of the account. */
 	description: string;
-	stocks?: AccountStockResponseDto[];
+	stocks: AccountStockResponseDto[];
 }

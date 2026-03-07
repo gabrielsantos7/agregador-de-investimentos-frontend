@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './pages/__root'
 import { Route as HomeLayoutRouteImport } from './pages/_home/layout'
 import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
 import { Route as HomeIndexRouteImport } from './pages/_home/index'
+import { Route as HomeTransactionsIndexRouteImport } from './pages/_home/transactions/index'
 import { Route as HomeStocksIndexRouteImport } from './pages/_home/stocks/index'
 import { Route as HomeDashboardIndexRouteImport } from './pages/_home/dashboard/index'
 import { Route as HomeAccountsIndexRouteImport } from './pages/_home/accounts/index'
@@ -29,6 +30,11 @@ const AuthLayoutRoute = AuthLayoutRouteImport.update({
 const HomeIndexRoute = HomeIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => HomeLayoutRoute,
+} as any)
+const HomeTransactionsIndexRoute = HomeTransactionsIndexRouteImport.update({
+  id: '/transactions/',
+  path: '/transactions/',
   getParentRoute: () => HomeLayoutRoute,
 } as any)
 const HomeStocksIndexRoute = HomeStocksIndexRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/accounts/': typeof HomeAccountsIndexRoute
   '/dashboard/': typeof HomeDashboardIndexRoute
   '/stocks/': typeof HomeStocksIndexRoute
+  '/transactions/': typeof HomeTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof HomeIndexRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/accounts': typeof HomeAccountsIndexRoute
   '/dashboard': typeof HomeDashboardIndexRoute
   '/stocks': typeof HomeStocksIndexRoute
+  '/transactions': typeof HomeTransactionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/_home/accounts/': typeof HomeAccountsIndexRoute
   '/_home/dashboard/': typeof HomeDashboardIndexRoute
   '/_home/stocks/': typeof HomeStocksIndexRoute
+  '/_home/transactions/': typeof HomeTransactionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -93,8 +102,16 @@ export interface FileRouteTypes {
     | '/accounts/'
     | '/dashboard/'
     | '/stocks/'
+    | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/accounts' | '/dashboard' | '/stocks'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/accounts'
+    | '/dashboard'
+    | '/stocks'
+    | '/transactions'
   id:
     | '__root__'
     | '/_auth'
@@ -105,6 +122,7 @@ export interface FileRouteTypes {
     | '/_home/accounts/'
     | '/_home/dashboard/'
     | '/_home/stocks/'
+    | '/_home/transactions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -133,6 +151,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof HomeIndexRouteImport
+      parentRoute: typeof HomeLayoutRoute
+    }
+    '/_home/transactions/': {
+      id: '/_home/transactions/'
+      path: '/transactions'
+      fullPath: '/transactions/'
+      preLoaderRoute: typeof HomeTransactionsIndexRouteImport
       parentRoute: typeof HomeLayoutRoute
     }
     '/_home/stocks/': {
@@ -192,6 +217,7 @@ interface HomeLayoutRouteChildren {
   HomeAccountsIndexRoute: typeof HomeAccountsIndexRoute
   HomeDashboardIndexRoute: typeof HomeDashboardIndexRoute
   HomeStocksIndexRoute: typeof HomeStocksIndexRoute
+  HomeTransactionsIndexRoute: typeof HomeTransactionsIndexRoute
 }
 
 const HomeLayoutRouteChildren: HomeLayoutRouteChildren = {
@@ -199,6 +225,7 @@ const HomeLayoutRouteChildren: HomeLayoutRouteChildren = {
   HomeAccountsIndexRoute: HomeAccountsIndexRoute,
   HomeDashboardIndexRoute: HomeDashboardIndexRoute,
   HomeStocksIndexRoute: HomeStocksIndexRoute,
+  HomeTransactionsIndexRoute: HomeTransactionsIndexRoute,
 }
 
 const HomeLayoutRouteWithChildren = HomeLayoutRoute._addFileChildren(
