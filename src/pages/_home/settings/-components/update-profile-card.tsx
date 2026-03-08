@@ -35,6 +35,7 @@ import {
 } from '@/http/requests/users';
 import type { ErrorResponseDto } from '@/http/schemas';
 import { useAuth } from '@/integrations/tanstack-store/stores/auth.store';
+import { cn } from '@/lib/utils';
 import {
 	type UpdateProfileSchema,
 	updateProfileSchema,
@@ -254,7 +255,10 @@ export function UpdateProfileCard() {
 										<div className="flex items-end">
 											<Avatar
 												key={avatarSrc ?? 'fallback'}
-												className="size-24 sm:size-28 border-3 border-border"
+												className={cn('size-24 sm:size-28 border-3', {
+													'border-border': avatarSrc,
+													'border-emerald-500/20': !avatarSrc,
+												})}
 											>
 												{avatarSrc && (
 													<AvatarImage
@@ -263,7 +267,7 @@ export function UpdateProfileCard() {
 													/>
 												)}
 
-												<AvatarFallback className="text-4xl bg-primary/10 text-primary">
+												<AvatarFallback className="text-4xl bg-emerald-500/10 text-emerald-500">
 													{user?.username?.charAt(0).toUpperCase() || 'U'}
 												</AvatarFallback>
 											</Avatar>

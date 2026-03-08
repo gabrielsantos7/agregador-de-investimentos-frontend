@@ -108,7 +108,7 @@ function Register() {
 		<div className="h-dvh w-full flex">
 			<div className="hidden lg:flex lg:w-1/2 bg-card relative overflow-hidden">
 				<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent" />
-				<div className="relative z-10 flex flex-col justify-between p-12 w-full">
+				<div className="relative z-10 flex flex-col justify-between py-10 px-12 w-full">
 					<div className="flex items-center gap-4">
 						<img src={logo} alt="Logo" className="size-20" />
 						<span className="text-3xl font-bold text-foreground">
