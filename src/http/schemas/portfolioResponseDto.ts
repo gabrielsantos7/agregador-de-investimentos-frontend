@@ -11,11 +11,11 @@
  */
 export interface PortfolioResponseDto {
 	/** User's liquid cash available in the platform. */
-	availableCash?: number;
+	availableCash: number;
 	/** Market value sum of all owned stocks. */
-	investedInStocks?: number;
+	investedInStocks: number;
 	/** Total equity (cash + stocks). */
-	totalEquity?: number;
+	totalEquity: number;
 	/** Timestamp of the real-time calculation. */
 	updatedAt?: string;
 }

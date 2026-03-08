@@ -19,8 +19,8 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/password-input';
-import type { ApiError } from '@/http/errors/api-error';
 import { useLogin } from '@/http/requests/authentication';
+import type { ErrorResponseDto } from '@/http/schemas';
 import { setAuthData } from '@/integrations/tanstack-store/stores/auth.store';
 import logo from '/logo.png';
 import { redirectSchema } from '../../../schemas/redirect.schema';
@@ -67,7 +67,7 @@ function Login() {
 	const navigate = useNavigate({ from: '/login/' });
 	const { redirect = '/' } = Route.useSearch();
 
-	const { mutate: login, isPending: isLoggingIn } = useLogin<ApiError>({
+	const { mutate: login, isPending: isLoggingIn } = useLogin<ErrorResponseDto>({
 		mutation: {
 			onSuccess: ({ user, accessToken }) => {
 				toast.success('Success', {

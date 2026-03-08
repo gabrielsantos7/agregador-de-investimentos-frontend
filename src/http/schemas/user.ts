@@ -15,6 +15,7 @@ export interface User {
 	password?: string;
 	role?: UserRole;
 	cash?: number;
+	avatarUrl?: string;
 	creationTimestamp?: string;
 	updateTimestamp?: string;
 	accounts?: Account[];

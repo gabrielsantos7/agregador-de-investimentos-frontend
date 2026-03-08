@@ -27,6 +27,7 @@ export * from './tradeRequest';
 export * from './transactionResponse';
 export * from './transactionResponseType';
 export * from './updateUserDto';
+export * from './uploadUserAvatarBody';
 export * from './user';
 export * from './userDto';
 export * from './userDtoRole';

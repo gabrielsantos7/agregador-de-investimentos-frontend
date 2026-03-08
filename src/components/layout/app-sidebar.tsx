@@ -1,6 +1,7 @@
 import { Separator } from '@radix-ui/react-separator';
 import { Link } from '@tanstack/react-router';
 import {
+	ArrowLeftRight,
 	LayoutDashboard,
 	type LucideIcon,
 	TrendingUp,
@@ -42,6 +43,11 @@ const menuItems: MenuItem[] = [
 		title: 'Stocks',
 		url: '/stocks',
 		icon: TrendingUp,
+	},
+	{
+		title: 'Transactions',
+		url: '/transactions',
+		icon: ArrowLeftRight,
 	},
 ];
 

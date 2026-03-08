@@ -26,6 +26,7 @@ import type {
 	CreateAccountDto,
 	ErrorResponseDto,
 	UpdateUserDto,
+	UploadUserAvatarBody,
 	User,
 } from '../schemas';
 
@@ -326,6 +327,173 @@ export const useDeleteUser = <TError = ErrorType<unknown>, TContext = unknown>(
 	TContext
 > => {
 	return useMutation(getDeleteUserMutationOptions(options), queryClient);
+};
+/**
+ * Uploads a new profile picture for the specified user and saves the URL in the database. If a previous picture exists, it will be deleted from storage.
+ * @summary Upload user profile picture
+ */
+export const uploadUserAvatar = (
+	userId: string,
+	uploadUserAvatarBody: BodyType<UploadUserAvatarBody>,
+	signal?: AbortSignal
+) => {
+	const formData = new FormData();
+	formData.append(`file`, uploadUserAvatarBody.file);
+
+	return orvalClient<void>({
+		url: `/users/${userId}/avatar`,
+		method: 'POST',
+		headers: { 'Content-Type': 'multipart/form-data' },
+		data: formData,
+		signal,
+	});
+};
+
+export const getUploadUserAvatarMutationOptions = <
+	TError = ErrorType<Blob>,
+	TContext = unknown,
+>(options?: {
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof uploadUserAvatar>>,
+		TError,
+		{ userId: string; data: BodyType<UploadUserAvatarBody> },
+		TContext
+	>;
+}): UseMutationOptions<
+	Awaited<ReturnType<typeof uploadUserAvatar>>,
+	TError,
+	{ userId: string; data: BodyType<UploadUserAvatarBody> },
+	TContext
+> => {
+	const mutationKey = ['uploadUserAvatar'];
+	const { mutation: mutationOptions } = options
+		? options.mutation &&
+			'mutationKey' in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof uploadUserAvatar>>,
+		{ userId: string; data: BodyType<UploadUserAvatarBody> }
+	> = props => {
+		const { userId, data } = props ?? {};
+
+		return uploadUserAvatar(userId, data);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type UploadUserAvatarMutationResult = NonNullable<
+	Awaited<ReturnType<typeof uploadUserAvatar>>
+>;
+export type UploadUserAvatarMutationBody = BodyType<UploadUserAvatarBody>;
+export type UploadUserAvatarMutationError = ErrorType<Blob>;
+
+/**
+ * @summary Upload user profile picture
+ */
+export const useUploadUserAvatar = <
+	TError = ErrorType<Blob>,
+	TContext = unknown,
+>(
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof uploadUserAvatar>>,
+			TError,
+			{ userId: string; data: BodyType<UploadUserAvatarBody> },
+			TContext
+		>;
+	},
+	queryClient?: QueryClient
+): UseMutationResult<
+	Awaited<ReturnType<typeof uploadUserAvatar>>,
+	TError,
+	{ userId: string; data: BodyType<UploadUserAvatarBody> },
+	TContext
+> => {
+	return useMutation(getUploadUserAvatarMutationOptions(options), queryClient);
+};
+/**
+ * Deletes the profile picture file from storage and clears the avatar URL in the database.
+ * @summary Remove user profile picture
+ */
+export const deleteUserAvatar = (userId: string, signal?: AbortSignal) => {
+	return orvalClient<void>({
+		url: `/users/${userId}/avatar`,
+		method: 'DELETE',
+		signal,
+	});
+};
+
+export const getDeleteUserAvatarMutationOptions = <
+	TError = ErrorType<Blob>,
+	TContext = unknown,
+>(options?: {
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof deleteUserAvatar>>,
+		TError,
+		{ userId: string },
+		TContext
+	>;
+}): UseMutationOptions<
+	Awaited<ReturnType<typeof deleteUserAvatar>>,
+	TError,
+	{ userId: string },
+	TContext
+> => {
+	const mutationKey = ['deleteUserAvatar'];
+	const { mutation: mutationOptions } = options
+		? options.mutation &&
+			'mutationKey' in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof deleteUserAvatar>>,
+		{ userId: string }
+	> = props => {
+		const { userId } = props ?? {};
+
+		return deleteUserAvatar(userId);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteUserAvatarMutationResult = NonNullable<
+	Awaited<ReturnType<typeof deleteUserAvatar>>
+>;
+
+export type DeleteUserAvatarMutationError = ErrorType<Blob>;
+
+/**
+ * @summary Remove user profile picture
+ */
+export const useDeleteUserAvatar = <
+	TError = ErrorType<Blob>,
+	TContext = unknown,
+>(
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof deleteUserAvatar>>,
+			TError,
+			{ userId: string },
+			TContext
+		>;
+	},
+	queryClient?: QueryClient
+): UseMutationResult<
+	Awaited<ReturnType<typeof deleteUserAvatar>>,
+	TError,
+	{ userId: string },
+	TContext
+> => {
+	return useMutation(getDeleteUserAvatarMutationOptions(options), queryClient);
 };
 /**
  * Retrieves all accounts owned by the user, including consolidated stock portfolios and real-time market values.

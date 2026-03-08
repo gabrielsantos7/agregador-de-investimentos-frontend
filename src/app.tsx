@@ -4,6 +4,7 @@ import { Toaster } from './components/ui/sonner';
 import * as TanstackQuery from './integrations/tanstack-query/root-provider';
 import { NotFound } from './pages/-404';
 import { routeTree } from './routeTree.gen';
+import { TooltipProvider } from './components/ui/tooltip';
 
 const rqContext = TanstackQuery.getContext();
 
@@ -24,8 +25,10 @@ export function App() {
 	return (
 		<TanstackQuery.Provider {...rqContext}>
 			<ThemeProvider>
-				<Toaster />
-				<RouterProvider router={router} />
+				<TooltipProvider>
+					<Toaster />
+					<RouterProvider router={router} />
+				</TooltipProvider>
 			</ThemeProvider>
 		</TanstackQuery.Provider>
 	);

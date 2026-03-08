@@ -5,7 +5,7 @@
  * System for managing stock portfolios with real-time integration via Brapi.
  * OpenAPI spec version: 1.0
  */
-import { useMutation, useQuery } from '@tanstack/react-query';
+
 import type {
 	DataTag,
 	DefinedInitialDataOptions,
@@ -20,11 +20,16 @@ import type {
 	UseQueryOptions,
 	UseQueryResult,
 } from '@tanstack/react-query';
-
-import type { ErrorResponseDto, TradeRequest } from '../schemas';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type { BodyType, ErrorType } from '../../lib/orval/orval.client';
 
 import { orvalClient } from '../../lib/orval/orval.client';
-import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
+import type {
+	ErrorResponseDto,
+	PortfolioResponseDto,
+	TradeRequest,
+	TransactionResponse,
+} from '../schemas';
 
 /**
  * Verifies share availability in the specific account, credits the total value to user cash, and logs the sale.
@@ -199,10 +204,9 @@ export const getAccountPortfolio = (
 	accountId: string,
 	signal?: AbortSignal
 ) => {
-	return orvalClient<Blob>({
+	return orvalClient<PortfolioResponseDto>({
 		url: `/trades/portfolio/${accountId}`,
 		method: 'GET',
-		responseType: 'blob',
 		signal,
 	});
 };
@@ -213,7 +217,7 @@ export const getGetAccountPortfolioQueryKey = (accountId: string) => {
 
 export const getGetAccountPortfolioQueryOptions = <
 	TData = Awaited<ReturnType<typeof getAccountPortfolio>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	accountId: string,
 	options?: {
@@ -250,11 +254,11 @@ export const getGetAccountPortfolioQueryOptions = <
 export type GetAccountPortfolioQueryResult = NonNullable<
 	Awaited<ReturnType<typeof getAccountPortfolio>>
 >;
-export type GetAccountPortfolioQueryError = ErrorType<Blob>;
+export type GetAccountPortfolioQueryError = ErrorType<ErrorResponseDto>;
 
 export function useGetAccountPortfolio<
 	TData = Awaited<ReturnType<typeof getAccountPortfolio>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	accountId: string,
 	options: {
@@ -280,7 +284,7 @@ export function useGetAccountPortfolio<
 };
 export function useGetAccountPortfolio<
 	TData = Awaited<ReturnType<typeof getAccountPortfolio>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	accountId: string,
 	options?: {
@@ -306,7 +310,7 @@ export function useGetAccountPortfolio<
 };
 export function useGetAccountPortfolio<
 	TData = Awaited<ReturnType<typeof getAccountPortfolio>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	accountId: string,
 	options?: {
@@ -328,7 +332,7 @@ export function useGetAccountPortfolio<
 
 export function useGetAccountPortfolio<
 	TData = Awaited<ReturnType<typeof getAccountPortfolio>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	accountId: string,
 	options?: {
@@ -359,10 +363,9 @@ export function useGetAccountPortfolio<
  * @summary Get transaction history
  */
 export const getTransactionHistory = (signal?: AbortSignal) => {
-	return orvalClient<Blob>({
+	return orvalClient<TransactionResponse[]>({
 		url: `/trades/history`,
 		method: 'GET',
-		responseType: 'blob',
 		signal,
 	});
 };
@@ -373,7 +376,7 @@ export const getGetTransactionHistoryQueryKey = () => {
 
 export const getGetTransactionHistoryQueryOptions = <
 	TData = Awaited<ReturnType<typeof getTransactionHistory>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(options?: {
 	query?: Partial<
 		UseQueryOptions<
@@ -401,11 +404,11 @@ export const getGetTransactionHistoryQueryOptions = <
 export type GetTransactionHistoryQueryResult = NonNullable<
 	Awaited<ReturnType<typeof getTransactionHistory>>
 >;
-export type GetTransactionHistoryQueryError = ErrorType<Blob>;
+export type GetTransactionHistoryQueryError = ErrorType<ErrorResponseDto>;
 
 export function useGetTransactionHistory<
 	TData = Awaited<ReturnType<typeof getTransactionHistory>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options: {
 		query: Partial<
@@ -430,7 +433,7 @@ export function useGetTransactionHistory<
 };
 export function useGetTransactionHistory<
 	TData = Awaited<ReturnType<typeof getTransactionHistory>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
@@ -455,7 +458,7 @@ export function useGetTransactionHistory<
 };
 export function useGetTransactionHistory<
 	TData = Awaited<ReturnType<typeof getTransactionHistory>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
@@ -476,7 +479,7 @@ export function useGetTransactionHistory<
 
 export function useGetTransactionHistory<
 	TData = Awaited<ReturnType<typeof getTransactionHistory>>,
-	TError = ErrorType<Blob>,
+	TError = ErrorType<ErrorResponseDto>,
 >(
 	options?: {
 		query?: Partial<
