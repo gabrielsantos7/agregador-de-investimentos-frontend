@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Loader } from '@/components/shared/loader';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
 	getGetOwnedStocksQueryOptions,
 	useGetOwnedStocks,

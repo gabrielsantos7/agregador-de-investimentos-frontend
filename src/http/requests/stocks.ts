@@ -22,9 +22,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+	AccountStockResponseDto,
 	CreateStockDto,
 	ErrorResponseDto,
-	UserStockSummaryDto,
 } from '../schemas';
 
 import { orvalClient } from '../../lib/orval/orval.client';
@@ -35,7 +35,7 @@ import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
  * @summary List all owned stocks
  */
 export const getOwnedStocks = (signal?: AbortSignal) => {
-	return orvalClient<UserStockSummaryDto[]>({
+	return orvalClient<AccountStockResponseDto[]>({
 		url: `/stocks`,
 		method: 'GET',
 		signal,

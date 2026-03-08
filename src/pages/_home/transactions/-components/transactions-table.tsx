@@ -34,25 +34,31 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import type { AccountStockResponseDto } from '@/http/schemas';
+import {
+	type TransactionResponse,
+	TransactionResponseType,
+} from '@/http/schemas';
 import { columns } from './columns';
 
-interface StocksTableProps {
-	data: AccountStockResponseDto[];
+interface TransactionsTableProps {
+	data: TransactionResponse[];
 }
 
-export function StocksTable({ data }: StocksTableProps) {
+export function TransactionsTable({ data }: TransactionsTableProps) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+		timestamp: true,
 		stockId: true,
-		totalQuantity: true,
+		type: true,
+		quantity: true,
+		priceAtTime: true,
+		totalValue: true,
 	});
 
 	const table = useReactTable({
 		data,
 		columns,
-
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
 		getCoreRowModel: getCoreRowModel(),
@@ -60,7 +66,6 @@ export function StocksTable({ data }: StocksTableProps) {
 		getSortedRowModel: getSortedRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
 		onColumnVisibilityChange: setColumnVisibility,
-
 		state: {
 			sorting,
 			columnFilters,
@@ -70,12 +75,12 @@ export function StocksTable({ data }: StocksTableProps) {
 
 	return (
 		<div className="space-y-6">
-			<div className="flex items-center gap-4">
+			<div className="flex items-center gap-6">
 				<div className="flex-1">
 					<div className="relative">
 						<Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
 						<Input
-							placeholder="Filter by ID..."
+							placeholder="Filter by stock..."
 							value={
 								(table.getColumn('stockId')?.getFilterValue() as string) ?? ''
 							}
@@ -86,6 +91,26 @@ export function StocksTable({ data }: StocksTableProps) {
 						/>
 					</div>
 				</div>
+				<Select
+					value={
+						(table.getColumn('type')?.getFilterValue() as string | undefined) ??
+						'all'
+					}
+					onValueChange={value =>
+						table
+							.getColumn('type')
+							?.setFilterValue(value === 'all' ? undefined : value)
+					}
+				>
+					<SelectTrigger className="w-40">
+						<SelectValue placeholder="Transaction type" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="all">All types</SelectItem>
+						<SelectItem value={TransactionResponseType.BUY}>Buy</SelectItem>
+						<SelectItem value={TransactionResponseType.SELL}>Sell</SelectItem>
+					</SelectContent>
+				</Select>
 			</div>
 			<div className="rounded-md border">
 				<Table>
@@ -135,6 +160,7 @@ export function StocksTable({ data }: StocksTableProps) {
 					</TableBody>
 				</Table>
 			</div>
+
 			<div className="flex items-center justify-end px-2">
 				<div className="flex items-center space-x-6 lg:space-x-8">
 					<div className="flex items-center space-x-2">

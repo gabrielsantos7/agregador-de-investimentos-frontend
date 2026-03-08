@@ -30,7 +30,10 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { getGetOwnedStocksQueryKey } from '@/http/requests/stocks';
-import { useBuyStock } from '@/http/requests/trades';
+import {
+	getGetTransactionHistoryQueryKey,
+	useBuyStock,
+} from '@/http/requests/trades';
 import { getListAllAccountsQueryKey } from '@/http/requests/users';
 import type { AccountResponseDto, ErrorResponseDto } from '@/http/schemas';
 import { useAuth } from '@/integrations/tanstack-store/stores/auth.store';
@@ -84,6 +87,10 @@ export function BuyStockModal({
 							queryKey: getListAllAccountsQueryKey(userId),
 						});
 					}
+
+					queryClient.invalidateQueries({
+						queryKey: getGetTransactionHistoryQueryKey(),
+					});
 				},
 				onError: error => {
 					const description = error.message || 'An unexpected error occurred';
