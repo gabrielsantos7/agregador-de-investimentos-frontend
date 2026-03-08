@@ -21,7 +21,6 @@ import {
 	FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import type { ApiError } from '@/http/errors/api-error';
 import {
 	getGetOwnedStocksQueryKey,
 	useCreateStock,
@@ -30,6 +29,7 @@ import {
 	type CreateStockSchema,
 	createStockSchema,
 } from '../-schemas/create-stock';
+import type { ErrorResponseDto } from '@/http/schemas';
 
 const defaultValues: CreateStockSchema = {
 	stockId: '',
@@ -41,7 +41,7 @@ export function CreateStockModal() {
 	const queryClient = useQueryClient();
 
 	const { mutate: createStock, isPending: isCreatingStock } =
-		useCreateStock<ApiError>({
+		useCreateStock<ErrorResponseDto>({
 			mutation: {
 				onSuccess: () => {
 					toast.success('Stock created successfully');

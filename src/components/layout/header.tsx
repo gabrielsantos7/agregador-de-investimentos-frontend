@@ -1,12 +1,12 @@
-import { useLocation, useNavigate } from '@tanstack/react-router';
-import { LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from '@tanstack/react-router';
+import { LogOut, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLogout } from '@/http/requests/authentication';
 import {
 	logout,
 	useAuth,
 } from '@/integrations/tanstack-store/stores/auth.store';
-import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 import {
 	DropdownMenu,
@@ -45,6 +45,7 @@ export function Header() {
 							<AvatarFallback className="bg-emerald-500/10 text-emerald-400">
 								{user?.username?.charAt(0).toUpperCase() || 'U'}
 							</AvatarFallback>
+							<AvatarImage src={user?.avatarUrl} alt={user?.username} />
 						</Avatar>
 					</Button>
 				</DropdownMenuTrigger>
@@ -62,13 +63,13 @@ export function Header() {
 							</p>
 						</div>
 					</DropdownMenuLabel>
-					{/* <DropdownMenuSeparator className="bg-border" />
-                <DropdownMenuItem asChild>
-                  <Link href="/settings" className="cursor-pointer">
-                    <Settings className="mr-2 size-4" />
-                    Settings
-                  </Link> */}
-					{/* </DropdownMenuItem> */}
+					<DropdownMenuSeparator className="bg-border" />
+					<DropdownMenuItem asChild>
+						<Link to="/settings" className="cursor-pointer">
+							<Settings className="mr-2 size-4" />
+							Settings
+						</Link>
+					</DropdownMenuItem>
 					<DropdownMenuSeparator className="bg-border" />
 					<DropdownMenuItem
 						onClick={() => mutate()}

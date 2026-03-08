@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { AppSidebar } from '@/components/layout/app-sidebar';
 import { Header } from '@/components/layout/header';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
@@ -31,6 +33,17 @@ export const Route = createFileRoute('/_home')({
 });
 
 function Layout() {
+	const { data: user } = useQuery(getMeQueryOptions());
+
+	useEffect(() => {
+		if (user) {
+			authStore.setState(prev => ({
+				...prev,
+				user,
+			}));
+		}
+	}, [user]);
+
 	return (
 		<SidebarProvider>
 			<AppSidebar />
