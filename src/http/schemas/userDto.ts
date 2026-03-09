@@ -19,4 +19,6 @@ export interface UserDto {
 	email: string;
 	/** Role or profile assigned to the user. */
 	role: UserDtoRole;
+	/** URL of the user's avatar image. */
+	avatarUrl?: string;
 }

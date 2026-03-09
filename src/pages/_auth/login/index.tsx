@@ -104,7 +104,7 @@ function Login() {
 		<div className="h-dvh w-full flex">
 			<div className="hidden lg:flex lg:w-1/2 bg-card relative overflow-hidden">
 				<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent" />
-				<div className="relative z-10 flex flex-col justify-between p-12 w-full">
+				<div className="relative z-10 flex flex-col justify-between px-12 py-8 w-full">
 					<div className="flex items-center gap-4">
 						<img src={logo} alt="Logo" className="size-20" />
 						<span className="text-3xl font-bold text-foreground">
@@ -116,7 +116,7 @@ function Login() {
 						<h1 className="text-4xl font-bold leading-tight text-balance text-emerald-400">
 							Manage your investments with confidence
 						</h1>
-						<p className="text-lg text-muted-foreground leading-relaxed">
+						<p className="text-lg text-muted-foreground leading-relaxed pb-4">
 							Real-time portfolio tracking, advanced analytics, and seamless
 							stock management all in one powerful platform.
 						</p>

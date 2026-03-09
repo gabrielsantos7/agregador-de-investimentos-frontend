@@ -5,7 +5,7 @@
  * System for managing stock portfolios with real-time integration via Brapi.
  * OpenAPI spec version: 1.0
  */
-
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
 	DataTag,
 	DefinedInitialDataOptions,
@@ -20,16 +20,16 @@ import type {
 	UseQueryOptions,
 	UseQueryResult,
 } from '@tanstack/react-query';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import type { BodyType, ErrorType } from '../../lib/orval/orval.client';
 
-import { orvalClient } from '../../lib/orval/orval.client';
 import type {
 	ErrorResponseDto,
 	PortfolioResponseDto,
 	TradeRequest,
 	TransactionResponse,
 } from '../schemas';
+
+import { orvalClient } from '../../lib/orval/orval.client';
+import type { ErrorType, BodyType } from '../../lib/orval/orval.client';
 
 /**
  * Verifies share availability in the specific account, credits the total value to user cash, and logs the sale.

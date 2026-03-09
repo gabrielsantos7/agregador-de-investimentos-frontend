@@ -14,6 +14,7 @@ import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
 import { Route as HomeIndexRouteImport } from './pages/_home/index'
 import { Route as HomeTransactionsIndexRouteImport } from './pages/_home/transactions/index'
 import { Route as HomeStocksIndexRouteImport } from './pages/_home/stocks/index'
+import { Route as HomeSettingsIndexRouteImport } from './pages/_home/settings/index'
 import { Route as HomeDashboardIndexRouteImport } from './pages/_home/dashboard/index'
 import { Route as HomeAccountsIndexRouteImport } from './pages/_home/accounts/index'
 import { Route as AuthRegisterIndexRouteImport } from './pages/_auth/register/index'
@@ -40,6 +41,11 @@ const HomeTransactionsIndexRoute = HomeTransactionsIndexRouteImport.update({
 const HomeStocksIndexRoute = HomeStocksIndexRouteImport.update({
   id: '/stocks/',
   path: '/stocks/',
+  getParentRoute: () => HomeLayoutRoute,
+} as any)
+const HomeSettingsIndexRoute = HomeSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
   getParentRoute: () => HomeLayoutRoute,
 } as any)
 const HomeDashboardIndexRoute = HomeDashboardIndexRouteImport.update({
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/register/': typeof AuthRegisterIndexRoute
   '/accounts/': typeof HomeAccountsIndexRoute
   '/dashboard/': typeof HomeDashboardIndexRoute
+  '/settings/': typeof HomeSettingsIndexRoute
   '/stocks/': typeof HomeStocksIndexRoute
   '/transactions/': typeof HomeTransactionsIndexRoute
 }
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterIndexRoute
   '/accounts': typeof HomeAccountsIndexRoute
   '/dashboard': typeof HomeDashboardIndexRoute
+  '/settings': typeof HomeSettingsIndexRoute
   '/stocks': typeof HomeStocksIndexRoute
   '/transactions': typeof HomeTransactionsIndexRoute
 }
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/_auth/register/': typeof AuthRegisterIndexRoute
   '/_home/accounts/': typeof HomeAccountsIndexRoute
   '/_home/dashboard/': typeof HomeDashboardIndexRoute
+  '/_home/settings/': typeof HomeSettingsIndexRoute
   '/_home/stocks/': typeof HomeStocksIndexRoute
   '/_home/transactions/': typeof HomeTransactionsIndexRoute
 }
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/register/'
     | '/accounts/'
     | '/dashboard/'
+    | '/settings/'
     | '/stocks/'
     | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/accounts'
     | '/dashboard'
+    | '/settings'
     | '/stocks'
     | '/transactions'
   id:
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | '/_auth/register/'
     | '/_home/accounts/'
     | '/_home/dashboard/'
+    | '/_home/settings/'
     | '/_home/stocks/'
     | '/_home/transactions/'
   fileRoutesById: FileRoutesById
@@ -165,6 +177,13 @@ declare module '@tanstack/react-router' {
       path: '/stocks'
       fullPath: '/stocks/'
       preLoaderRoute: typeof HomeStocksIndexRouteImport
+      parentRoute: typeof HomeLayoutRoute
+    }
+    '/_home/settings/': {
+      id: '/_home/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof HomeSettingsIndexRouteImport
       parentRoute: typeof HomeLayoutRoute
     }
     '/_home/dashboard/': {
@@ -216,6 +235,7 @@ interface HomeLayoutRouteChildren {
   HomeIndexRoute: typeof HomeIndexRoute
   HomeAccountsIndexRoute: typeof HomeAccountsIndexRoute
   HomeDashboardIndexRoute: typeof HomeDashboardIndexRoute
+  HomeSettingsIndexRoute: typeof HomeSettingsIndexRoute
   HomeStocksIndexRoute: typeof HomeStocksIndexRoute
   HomeTransactionsIndexRoute: typeof HomeTransactionsIndexRoute
 }
@@ -224,6 +244,7 @@ const HomeLayoutRouteChildren: HomeLayoutRouteChildren = {
   HomeIndexRoute: HomeIndexRoute,
   HomeAccountsIndexRoute: HomeAccountsIndexRoute,
   HomeDashboardIndexRoute: HomeDashboardIndexRoute,
+  HomeSettingsIndexRoute: HomeSettingsIndexRoute,
   HomeStocksIndexRoute: HomeStocksIndexRoute,
   HomeTransactionsIndexRoute: HomeTransactionsIndexRoute,
 }
