@@ -1,6 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { ArrowLeftRight } from 'lucide-react';
 import { Loader } from '@/components/shared/loader';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+	Empty,
+	EmptyDescription,
+	EmptyMedia,
+	EmptyTitle,
+} from '@/components/ui/empty';
 import {
 	getGetTransactionHistoryQueryOptions,
 	useGetTransactionHistory,
@@ -18,10 +25,16 @@ export const Route = createFileRoute('/_home/transactions/')({
 });
 
 function Transactions() {
-	const { data: transactionHistoryData } = useGetTransactionHistory();
+	const { data: transactionHistoryData, isLoading } =
+		useGetTransactionHistory();
 	const transactions = Array.isArray(transactionHistoryData)
 		? transactionHistoryData
 		: [];
+	const hasTransactions = transactions.length > 0;
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="space-y-6">
@@ -33,11 +46,23 @@ function Transactions() {
 					</p>
 				</div>
 			</div>
-			<Card>
-				<CardContent>
-					<TransactionsTable data={transactions} />
-				</CardContent>
-			</Card>
+			{hasTransactions ? (
+				<Card>
+					<CardContent>
+						<TransactionsTable data={transactions} />
+					</CardContent>
+				</Card>
+			) : (
+				<Empty>
+					<EmptyMedia variant="icon">
+						<ArrowLeftRight className="size-10" />
+					</EmptyMedia>
+					<EmptyTitle>No transactions found</EmptyTitle>
+					<EmptyDescription>
+						Your buy and sell transactions will appear here.
+					</EmptyDescription>
+				</Empty>
+			)}
 		</div>
 	);
 }

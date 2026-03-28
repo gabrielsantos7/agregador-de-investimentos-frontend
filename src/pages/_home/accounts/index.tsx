@@ -1,5 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { Wallet } from 'lucide-react';
 import { Loader } from '@/components/shared/loader';
+import {
+	Empty,
+	EmptyContent,
+	EmptyDescription,
+	EmptyMedia,
+	EmptyTitle,
+} from '@/components/ui/empty';
 import {
 	getListAllAccountsQueryOptions,
 	useListAllAccounts,
@@ -29,9 +37,14 @@ export const Route = createFileRoute('/_home/accounts/')({
 
 function Accounts() {
 	const { user } = RootLayout.useLoaderData();
-	const { data } = useListAllAccounts(user.userId);
+	const { data, isLoading } = useListAllAccounts(user.userId);
 
 	const accounts = Array.isArray(data) ? data : [];
+	const hasAccounts = accounts.length > 0;
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="space-y-6">
@@ -44,11 +57,26 @@ function Accounts() {
 				</div>
 				<CreateAccountModal />
 			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-				{accounts.map(account => (
-					<AccountCard key={account.accountId} account={account} />
-				))}
-			</div>
+			{hasAccounts ? (
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+					{accounts.map(account => (
+						<AccountCard key={account.accountId} account={account} />
+					))}
+				</div>
+			) : (
+				<Empty>
+					<EmptyMedia variant="icon">
+						<Wallet className="size-10" />
+					</EmptyMedia>
+					<EmptyTitle>No accounts found</EmptyTitle>
+					<EmptyDescription>
+						Create your first account to start investing.
+					</EmptyDescription>
+					<EmptyContent>
+						<CreateAccountModal />
+					</EmptyContent>
+				</Empty>
+			)}
 		</div>
 	);
 }

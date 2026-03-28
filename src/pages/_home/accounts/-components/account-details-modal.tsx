@@ -7,7 +7,6 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -47,7 +46,7 @@ export function AccountDetailsModal({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="bg-card border-border max-w-2xl! max-h-[85vh] flex flex-col">
+			<DialogContent className="bg-card border-border max-w-2xl! max-h-[95vh] flex flex-col">
 				<DialogHeader>
 					<DialogTitle className="text-foreground flex items-center gap-3">
 						<div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -55,9 +54,6 @@ export function AccountDetailsModal({
 						</div>
 						{account.description}
 					</DialogTitle>
-					<DialogDescription className="text-muted-foreground">
-						Account holdings and performance details
-					</DialogDescription>
 				</DialogHeader>
 
 				<div className="space-y-4 min-h-0 overflow-hidden">
@@ -96,7 +92,7 @@ export function AccountDetailsModal({
 									No stocks in this account
 								</p>
 							) : (
-								<div className="overflow-hidden rounded-lg max-h-[45vh] overflow-y-auto">
+								<div className="overflow-hidden rounded-lg max-h-[50vh] overflow-y-auto">
 									<Table className="w-full text-sm">
 										<TableHeader className="overflow-hidden">
 											<TableRow className="border-b border-border">
