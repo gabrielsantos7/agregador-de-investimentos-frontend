@@ -18,7 +18,7 @@ export function NotFound() {
 						Sorry, we couldn't find the page you're looking for.
 					</p>
 				</div>
-				<Button asChild variant='primary'>
+				<Button asChild variant="primary">
 					<Link to="/">Go back home</Link>
 				</Button>
 			</div>
