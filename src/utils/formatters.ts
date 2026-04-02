@@ -8,7 +8,7 @@ type FormatCurrencyOptions = {
 };
 
 export function formatCurrency(
-	value: Decimal,
+	value: Decimal | number,
 	options: FormatCurrencyOptions = {}
 ): string {
 	const {
@@ -23,5 +23,5 @@ export function formatCurrency(
 		currency,
 		minimumFractionDigits,
 		maximumFractionDigits,
-	}).format(value.toNumber());
+	}).format(typeof value === 'number' ? value : value.toNumber());
 }
